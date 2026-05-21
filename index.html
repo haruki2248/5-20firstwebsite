@@ -6,18 +6,18 @@
   <title>日本全土 | インタラクティブ地図</title>
   <style>
     :root {
-      --ink: #241d18;
-      --muted: #74695e;
-      --paper: #efe3c9;
-      --surface: rgba(255, 251, 239, 0.88);
-      --line: #cdbb98;
-      --blue: #24506a;
-      --blue-dark: #142f3f;
-      --red: #9d352c;
-      --gold: #b98c3e;
+      --ink: #1a1410;
+      --muted: #6f6252;
+      --paper: #d8c49b;
+      --surface: rgba(245, 230, 197, 0.9);
+      --line: #8e7042;
+      --blue: #1f4052;
+      --blue-dark: #0f2530;
+      --red: #7b241f;
+      --gold: #c39a45;
       --green: #7fb069;
       --green-dark: #3f7444;
-      --shadow: 0 22px 54px rgba(36, 29, 24, 0.18);
+      --shadow: 0 28px 68px rgba(20, 12, 6, 0.34);
     }
 
     * {
@@ -32,9 +32,12 @@
       line-height: 1.6;
       color: var(--ink);
       background:
-        repeating-linear-gradient(96deg, rgba(74, 54, 32, 0.035) 0 1px, transparent 1px 18px),
-        repeating-linear-gradient(4deg, rgba(255, 255, 255, 0.18) 0 2px, transparent 2px 24px),
-        linear-gradient(180deg, rgba(36, 80, 106, 0.2), rgba(157, 53, 44, 0.06) 46%, rgba(239, 227, 201, 0) 78%),
+        radial-gradient(circle at 50% -10%, rgba(195, 154, 69, 0.34), transparent 34rem),
+        radial-gradient(circle at 0 8%, rgba(123, 36, 31, 0.26), transparent 24rem),
+        radial-gradient(circle at 100% 16%, rgba(15, 37, 48, 0.32), transparent 28rem),
+        repeating-linear-gradient(45deg, rgba(26, 20, 16, 0.08) 0 1px, transparent 1px 22px),
+        repeating-linear-gradient(135deg, rgba(255, 247, 224, 0.13) 0 1px, transparent 1px 22px),
+        linear-gradient(180deg, #2a1b13 0, #8a6d3f 36%, #d8c49b 82%),
         var(--paper);
     }
 
@@ -44,12 +47,13 @@
       z-index: 0;
       content: "";
       background:
-        radial-gradient(circle at 0 100%, transparent 0 18px, rgba(36, 80, 106, 0.09) 19px 20px, transparent 21px),
-        radial-gradient(circle at 24px 100%, transparent 0 18px, rgba(36, 80, 106, 0.06) 19px 20px, transparent 21px),
-        linear-gradient(135deg, rgba(185, 140, 62, 0.16), transparent 34%),
-        linear-gradient(315deg, rgba(36, 80, 106, 0.12), transparent 38%);
-      background-size: 48px 28px, 48px 28px, 100% 100%, 100% 100%;
-      opacity: 0.65;
+        linear-gradient(30deg, transparent 36%, rgba(195, 154, 69, 0.18) 37% 39%, transparent 40%),
+        linear-gradient(150deg, transparent 36%, rgba(195, 154, 69, 0.14) 37% 39%, transparent 40%),
+        linear-gradient(90deg, rgba(26, 20, 16, 0.08) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(26, 20, 16, 0.08) 1px, transparent 1px),
+        radial-gradient(ellipse at center, transparent 40%, rgba(18, 12, 8, 0.46) 100%);
+      background-size: 42px 72px, 42px 72px, 84px 84px, 84px 84px, 100% 100%;
+      opacity: 0.74;
       pointer-events: none;
     }
 
@@ -74,7 +78,9 @@
       align-items: center;
       gap: 10px;
       font-weight: 800;
+      color: #f4dfaa;
       letter-spacing: 0;
+      text-shadow: 0 2px 12px rgba(20, 12, 6, 0.42);
     }
 
     .brand-mark {
@@ -84,9 +90,9 @@
       place-items: center;
       border: 2px solid var(--red);
       border-radius: 8px;
-      background: #f9efe1;
-      color: var(--red);
-      box-shadow: 4px 4px 0 rgba(36, 29, 24, 0.86);
+      background: linear-gradient(145deg, #ead39a, #8d2b24);
+      color: #fff4d2;
+      box-shadow: 4px 4px 0 rgba(20, 12, 6, 0.9);
     }
 
     .nav-links {
@@ -96,9 +102,10 @@
     }
 
     .nav-links a {
-      color: var(--blue-dark);
+      color: #f1dca6;
       font-weight: 700;
       text-decoration: none;
+      text-shadow: 0 2px 10px rgba(20, 12, 6, 0.4);
     }
 
     .hero {
@@ -115,12 +122,17 @@
       font-size: clamp(2.8rem, 8vw, 6.4rem);
       line-height: 0.95;
       letter-spacing: 0;
+      color: #fff0bf;
+      text-shadow:
+        0 2px 0 rgba(26, 20, 16, 0.86),
+        0 18px 32px rgba(20, 12, 6, 0.42);
     }
 
     h2 {
       margin: 0 0 12px;
       font-size: clamp(1.35rem, 2vw, 1.8rem);
       line-height: 1.25;
+      color: var(--ink);
     }
 
     p {
@@ -130,8 +142,9 @@
 
     .lead {
       max-width: 36rem;
-      color: var(--muted);
+      color: #f6e8c7;
       font-size: clamp(1rem, 1.8vw, 1.22rem);
+      text-shadow: 0 2px 16px rgba(20, 12, 6, 0.5);
     }
 
     .hero-actions {
@@ -150,7 +163,8 @@
       padding: 0 18px;
       border: 2px solid var(--ink);
       border-radius: 8px;
-      background: rgba(255, 248, 232, 0.92);
+      background:
+        linear-gradient(145deg, rgba(255, 240, 196, 0.96), rgba(213, 174, 94, 0.92));
       color: var(--ink);
       box-shadow: 4px 4px 0 var(--ink);
       font: inherit;
@@ -162,7 +176,7 @@
 
     .button.primary,
     button[aria-pressed="true"] {
-      background: var(--red);
+      background: linear-gradient(145deg, #9b332c, #5e1a16);
       color: #ffffff;
     }
 
@@ -179,12 +193,14 @@
       display: grid;
       gap: 10px;
       padding: 22px;
-      border: 1px solid var(--line);
+      border: 1px solid rgba(195, 154, 69, 0.65);
       border-radius: 8px;
       background:
-        linear-gradient(135deg, rgba(255, 255, 255, 0.52), rgba(239, 227, 201, 0.58)),
+        linear-gradient(135deg, rgba(255, 244, 215, 0.88), rgba(218, 189, 129, 0.68)),
         var(--surface);
-      box-shadow: 0 12px 34px rgba(36, 29, 24, 0.08);
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 247, 224, 0.58),
+        0 20px 46px rgba(20, 12, 6, 0.2);
     }
 
     .profile p {
@@ -197,9 +213,11 @@
       border: 2px solid var(--ink);
       border-radius: 8px;
       background:
-        linear-gradient(135deg, rgba(255, 255, 255, 0.48), rgba(239, 227, 201, 0.58)),
+        linear-gradient(135deg, rgba(255, 244, 215, 0.92), rgba(205, 164, 85, 0.7)),
         var(--surface);
-      box-shadow: var(--shadow);
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 247, 224, 0.5),
+        var(--shadow);
     }
 
     .google-map-header {
@@ -219,9 +237,11 @@
       width: 100%;
       height: min(68vh, 520px);
       min-height: 360px;
-      border: 1px solid rgba(36, 29, 24, 0.28);
+      border: 2px solid rgba(26, 20, 16, 0.78);
       border-radius: 8px;
-      box-shadow: inset 0 0 0 1px rgba(255, 251, 239, 0.56);
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 247, 224, 0.42),
+        0 14px 32px rgba(20, 12, 6, 0.22);
     }
 
     @media (max-width: 860px) {

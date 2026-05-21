@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>関東地方 | 都道府県クイズ</title>
+  <title>小判ランナー | 2Dアクションゲーム</title>
   <style>
     :root {
       --ink: #1a1410;
@@ -207,67 +207,14 @@
       color: var(--muted);
     }
 
-    .google-map-section {
-      margin-top: 28px;
-      padding: 24px;
-      border: 2px solid var(--ink);
-      border-radius: 8px;
-      background:
-        linear-gradient(135deg, rgba(255, 244, 215, 0.92), rgba(205, 164, 85, 0.7)),
-        var(--surface);
-      box-shadow:
-        inset 0 0 0 1px rgba(255, 247, 224, 0.5),
-        var(--shadow);
-    }
-
-    .google-map-header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 18px;
-      margin-bottom: 18px;
-    }
-
-    .google-map-header p {
-      max-width: 34rem;
-      color: var(--muted);
-    }
-
-    .game-layout {
-      display: grid;
-      grid-template-columns: minmax(280px, 0.78fr) minmax(360px, 1.22fr);
-      gap: 22px;
-      align-items: stretch;
-    }
-
-    .game-panel {
-      display: grid;
-      gap: 16px;
-      align-content: start;
-      padding: 18px;
-      border: 1px solid rgba(26, 20, 16, 0.32);
-      border-radius: 8px;
-      background: rgba(255, 244, 215, 0.72);
-      box-shadow: inset 0 0 0 1px rgba(255, 247, 224, 0.42);
-    }
-
     .game-stat span {
       color: var(--muted);
       font-size: 0.92rem;
       font-weight: 800;
     }
 
-    .clue-image {
-      width: 100%;
-      aspect-ratio: 4 / 3;
-      object-fit: cover;
-      border: 2px solid rgba(26, 20, 16, 0.82);
-      border-radius: 8px;
-      background: #d9c18d;
-      box-shadow: 6px 6px 0 rgba(26, 20, 16, 0.78);
-    }
-
-    .game-stats {
+    .game-stats,
+    .arcade-hud {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 10px;
@@ -286,70 +233,56 @@
       line-height: 1.1;
     }
 
-    .result-box {
-      min-height: 58px;
-      padding: 12px 14px;
-      border-left: 6px solid var(--gold);
+    .action-game-section {
+      margin-top: 28px;
+      padding: 24px;
+      border: 2px solid var(--ink);
       border-radius: 8px;
-      background: rgba(255, 248, 232, 0.8);
-      font-weight: 800;
+      background:
+        linear-gradient(135deg, rgba(255, 244, 215, 0.92), rgba(123, 36, 31, 0.18)),
+        var(--surface);
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 247, 224, 0.48),
+        var(--shadow);
     }
 
-    .result-box.correct {
-      border-left-color: #2f6b3f;
-      color: #214d2e;
+    .action-game-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 18px;
     }
 
-    .result-box.wrong {
-      border-left-color: var(--red);
-      color: #6d1f1a;
+    .action-game-header p {
+      color: var(--muted);
+      max-width: 36rem;
     }
 
-    .kanto-map-frame {
+    .arcade-wrap {
       display: grid;
-      place-items: center;
+      gap: 16px;
+    }
+
+    .arcade-canvas {
       width: 100%;
-      height: min(68vh, 520px);
-      min-height: 360px;
+      aspect-ratio: 16 / 9;
       border: 2px solid rgba(26, 20, 16, 0.78);
       border-radius: 8px;
+      background: #1b2028;
       box-shadow:
-        inset 0 0 0 1px rgba(255, 247, 224, 0.42),
+        inset 0 0 0 1px rgba(255, 247, 224, 0.26),
         0 14px 32px rgba(20, 12, 6, 0.22);
     }
 
-    .kanto-map {
-      width: min(100%, 560px);
-      height: auto;
+    .arcade-hud {
+      grid-template-columns: repeat(4, 1fr);
     }
 
-    .kanto-pref {
-      fill: rgba(195, 154, 69, 0.58);
-      stroke: rgba(26, 20, 16, 0.84);
-      stroke-width: 3;
-      cursor: pointer;
-      transition: fill 0.18s ease, transform 0.18s ease, filter 0.18s ease;
-      transform-box: fill-box;
-      transform-origin: center;
-    }
-
-    .kanto-pref:hover,
-    .kanto-pref:focus {
-      fill: rgba(123, 36, 31, 0.72);
-      filter: drop-shadow(0 7px 8px rgba(20, 12, 6, 0.28));
-      outline: none;
-      transform: scale(1.02);
-    }
-
-    .kanto-label {
-      pointer-events: none;
-      fill: #fff0bf;
-      font-size: 21px;
-      font-weight: 900;
-      paint-order: stroke;
-      stroke: rgba(26, 20, 16, 0.74);
-      stroke-width: 4px;
-      text-anchor: middle;
+    .arcade-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     @media (max-width: 860px) {
@@ -375,11 +308,7 @@
         min-height: auto;
       }
 
-      .game-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .google-map-header {
+      .action-game-header {
         align-items: flex-start;
         flex-direction: column;
       }
@@ -401,12 +330,12 @@
         width: 100%;
       }
 
-      .google-map-section {
+      .action-game-section {
         padding: 16px;
       }
 
-      .kanto-map-frame {
-        min-height: 320px;
+      .arcade-hud {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
   </style>
@@ -416,185 +345,447 @@
     <header class="site-header">
       <div class="brand">
         <span class="brand-mark" aria-hidden="true">日</span>
-        <span>関東地方</span>
+        <span>小判ランナー</span>
       </div>
       <nav class="nav-links" aria-label="ページ内メニュー">
         <a href="#about">About</a>
-        <a href="#map">Map</a>
+        <a href="#action-game">Game</a>
       </nav>
     </header>
 
     <section class="hero" aria-labelledby="page-title">
       <div>
-        <h1 id="page-title">関東を<br>当てる</h1>
-        <p class="lead">関東地方の特産品や観光地のヒント画像を見て、地図上の都県をクリックして答えるクイズです。</p>
+        <h1 id="page-title">小判を<br>集める</h1>
+        <p class="lead">古風な世界を走り抜け、小判を集めながら障害物を避ける2次元アクションゲームです。</p>
         <div class="hero-actions">
-          <a class="button primary" href="#map">ゲームを始める</a>
+          <a class="button primary" href="#action-game">ゲームを始める</a>
           <a class="button" href="#about">サイトについて</a>
         </div>
       </div>
 
       <section id="about" class="profile" aria-labelledby="about-title">
         <h2 id="about-title">About</h2>
-        <p>GitHub Pagesで公開できる、関東地方だけの都県クイズです。APIキーなしで、ページを開くだけで遊べます。</p>
+        <p>GitHub Pagesで公開できる、HTMLだけの2次元アクションゲームです。キーボードで移動とジャンプを操作できます。</p>
       </section>
     </section>
 
-    <section id="map" class="google-map-section" aria-labelledby="google-map-title">
-      <div class="google-map-header">
+    <section id="action-game" class="action-game-section" aria-labelledby="action-game-title">
+      <div class="action-game-header">
         <div>
-          <h2 id="google-map-title">関東地方クイズ</h2>
-          <p>特産品や観光地のヒント画像を見て、該当する都県を関東マップでクリックしてください。</p>
+          <h2 id="action-game-title">小判ランナー</h2>
+          <p>剣と爆弾を使い、敵をかわしながら小判を集める2次元アクションゲームです。</p>
         </div>
       </div>
-      <div class="game-layout">
-        <aside class="game-panel" aria-label="クイズ操作パネル">
-          <img id="clue-image" class="clue-image" alt="都道府県クイズのヒント画像">
-          <div class="hero-actions">
-            <button id="start-game" class="primary" type="button">ゲーム開始</button>
-            <button id="next-question" type="button" disabled>次の問題</button>
-          </div>
-          <div class="game-stats">
-            <div class="game-stat"><span>問題</span><strong id="round-count">0</strong></div>
-            <div class="game-stat"><span>正解</span><strong id="score-count">0</strong></div>
-            <div class="game-stat"><span>連続</span><strong id="streak-count">0</strong></div>
-          </div>
-          <div id="result" class="result-box">ゲーム開始ボタンを押してください。</div>
-        </aside>
-        <div class="kanto-map-frame" role="application" aria-label="回答用関東地方マップ">
-          <svg class="kanto-map" viewBox="0 0 560 520" role="img" aria-label="関東地方のクリックマップ">
-            <path class="kanto-pref" data-name="群馬県" d="M126 72 L248 54 L304 118 L274 210 L175 230 L104 178 Z" tabindex="0" />
-            <path class="kanto-pref" data-name="栃木県" d="M304 70 L430 92 L456 190 L382 260 L274 210 L304 118 Z" tabindex="0" />
-            <path class="kanto-pref" data-name="茨城県" d="M430 92 L505 158 L488 330 L414 372 L382 260 L456 190 Z" tabindex="0" />
-            <path class="kanto-pref" data-name="埼玉県" d="M175 230 L274 210 L382 260 L350 330 L218 342 L146 292 Z" tabindex="0" />
-            <path class="kanto-pref" data-name="東京都" d="M218 342 L350 330 L368 382 L282 408 L198 382 Z" tabindex="0" />
-            <path class="kanto-pref" data-name="千葉県" d="M368 382 L414 372 L488 330 L510 438 L456 490 L386 446 Z" tabindex="0" />
-            <path class="kanto-pref" data-name="神奈川県" d="M198 382 L282 408 L386 446 L336 486 L196 458 L148 410 Z" tabindex="0" />
-            <text class="kanto-label" x="198" y="150">群馬</text>
-            <text class="kanto-label" x="366" y="166">栃木</text>
-            <text class="kanto-label" x="438" y="268">茨城</text>
-            <text class="kanto-label" x="260" y="292">埼玉</text>
-            <text class="kanto-label" x="288" y="372">東京</text>
-            <text class="kanto-label" x="438" y="424">千葉</text>
-            <text class="kanto-label" x="270" y="448">神奈川</text>
-          </svg>
+      <div class="arcade-wrap">
+        <canvas id="runner-canvas" class="arcade-canvas" width="960" height="540" aria-label="小判ランナーゲーム画面"></canvas>
+        <div class="arcade-hud">
+          <div class="game-stat"><span>得点</span><strong id="runner-score">0</strong></div>
+          <div class="game-stat"><span>小判</span><strong id="runner-coins">0</strong></div>
+          <div class="game-stat"><span>体力</span><strong id="runner-life">3</strong></div>
+          <div class="game-stat"><span>状態</span><strong id="runner-state">待機</strong></div>
+          <div class="game-stat"><span>爆弾</span><strong id="runner-bombs">0</strong></div>
+          <div class="game-stat"><span>仲間</span><strong id="runner-ally">なし</strong></div>
+        </div>
+        <div class="arcade-controls">
+          <button id="runner-start" class="primary" type="button">アクションゲーム開始</button>
+          <button id="runner-reset" type="button">リセット</button>
         </div>
       </div>
     </section>
   </main>
   <script>
-    const prefectures = [
-      { name: '茨城県', clue: '偕楽園の梅と納豆', colorA: '#8d2e63', colorB: '#c9b36b', icon: '梅' },
-      { name: '栃木県', clue: '日光東照宮といちご', colorA: '#7d3226', colorB: '#f0c7c2', icon: '宮' },
-      { name: '群馬県', clue: '草津温泉とだるま', colorA: '#bf3428', colorB: '#f4e2b8', icon: '湯' },
-      { name: '埼玉県', clue: '川越の蔵造りと草加せんべい', colorA: '#6d4a2b', colorB: '#d2ab65', icon: '蔵' },
-      { name: '千葉県', clue: '落花生と海辺', colorA: '#b9823f', colorB: '#8dc4d5', icon: '海' },
-      { name: '東京都', clue: '東京タワーと都心の夜景', colorA: '#9b2d27', colorB: '#171d2d', icon: '塔' },
-      { name: '神奈川県', clue: '横浜港と箱根', colorA: '#254b6a', colorB: '#d9e1e8', icon: '港' }
-    ];
+    const runnerCanvas = document.getElementById('runner-canvas');
+    const runnerCtx = runnerCanvas.getContext('2d');
+    const runnerScore = document.getElementById('runner-score');
+    const runnerCoins = document.getElementById('runner-coins');
+    const runnerLife = document.getElementById('runner-life');
+    const runnerState = document.getElementById('runner-state');
+    const runnerBombs = document.getElementById('runner-bombs');
+    const runnerAlly = document.getElementById('runner-ally');
+    const runnerStart = document.getElementById('runner-start');
+    const runnerReset = document.getElementById('runner-reset');
+    const keys = new Set();
+    const runner = {
+      player: { x: 120, y: 392, w: 42, h: 54, vx: 0, vy: 0, facing: 1, grounded: true, invincible: 0, attack: 0 },
+      platforms: [
+        { x: 0, y: 456, w: 960, h: 84 },
+        { x: 250, y: 358, w: 160, h: 22 },
+        { x: 520, y: 300, w: 170, h: 22 },
+        { x: 740, y: 382, w: 130, h: 22 }
+      ],
+      coins: [],
+      enemies: [],
+      arrows: [],
+      pickups: [],
+      bombs: [],
+      score: 0,
+      coinsTaken: 0,
+      bombsHeld: 0,
+      allyTime: 0,
+      life: 3,
+      running: false,
+      lastTime: 0,
+      spawnTimer: 0,
+      pickupTimer: 0
+    };
 
-    let currentQuestion;
-    let score = 0;
-    let round = 0;
-    let streak = 0;
-    let answered = false;
-
-    const clueImage = document.getElementById('clue-image');
-    const result = document.getElementById('result');
-    const scoreCount = document.getElementById('score-count');
-    const roundCount = document.getElementById('round-count');
-    const streakCount = document.getElementById('streak-count');
-    const startButton = document.getElementById('start-game');
-    const nextButton = document.getElementById('next-question');
-    const prefectureAreas = document.querySelectorAll('.kanto-pref');
-
-    function makeClueImage(prefecture) {
-      const svg = `
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 720">
-          <defs>
-            <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
-              <stop offset="0" stop-color="${prefecture.colorA}"/>
-              <stop offset="1" stop-color="${prefecture.colorB}"/>
-            </linearGradient>
-            <pattern id="grid" width="56" height="56" patternUnits="userSpaceOnUse">
-              <path d="M0 28H56M28 0V56" stroke="rgba(255,255,255,.18)" stroke-width="2"/>
-              <path d="M0 0L56 56M56 0L0 56" stroke="rgba(0,0,0,.1)" stroke-width="1"/>
-            </pattern>
-          </defs>
-          <rect width="960" height="720" fill="url(#bg)"/>
-          <rect width="960" height="720" fill="url(#grid)" opacity=".75"/>
-          <circle cx="720" cy="150" r="190" fill="rgba(255,244,210,.28)"/>
-          <circle cx="245" cy="390" r="220" fill="rgba(26,20,16,.18)"/>
-          <rect x="68" y="72" width="824" height="576" rx="32" fill="rgba(255,247,224,.18)" stroke="rgba(255,247,224,.68)" stroke-width="8"/>
-          <text x="480" y="272" text-anchor="middle" font-family="serif" font-size="180" font-weight="900" fill="rgba(255,247,224,.96)">${prefecture.icon}</text>
-          <text x="480" y="430" text-anchor="middle" font-family="sans-serif" font-size="52" font-weight="800" fill="rgba(255,247,224,.96)">これはどこの都道府県？</text>
-          <text x="480" y="506" text-anchor="middle" font-family="sans-serif" font-size="42" font-weight="700" fill="rgba(26,20,16,.82)">${prefecture.clue}</text>
-        </svg>`;
-      return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
+    function resetRunner() {
+      runner.player = { x: 120, y: 392, w: 42, h: 54, vx: 0, vy: 0, facing: 1, grounded: true, invincible: 0, attack: 0 };
+      runner.coins = [
+        { x: 300, y: 314, r: 13, taken: false },
+        { x: 580, y: 256, r: 13, taken: false },
+        { x: 790, y: 338, r: 13, taken: false }
+      ];
+      runner.enemies = [
+        { type: 'sword', x: 430, y: 402, w: 38, h: 54, vx: -70, hp: 2, cooldown: 0.8, attack: 0 },
+        { type: 'archer', x: 790, y: 328, w: 38, h: 54, vx: 0, hp: 2, cooldown: 1.4, attack: 0 }
+      ];
+      runner.arrows = [];
+      runner.pickups = [];
+      runner.bombs = [];
+      runner.score = 0;
+      runner.coinsTaken = 0;
+      runner.bombsHeld = 0;
+      runner.allyTime = 0;
+      runner.life = 3;
+      runner.spawnTimer = 0;
+      runner.pickupTimer = 0;
+      runnerState.textContent = '待機';
+      updateRunnerHud();
+      drawRunner();
     }
 
-    function setResult(message, type) {
-      result.textContent = message;
-      result.className = 'result-box' + (type ? ` ${type}` : '');
+    function updateRunnerHud() {
+      runnerScore.textContent = Math.floor(runner.score);
+      runnerCoins.textContent = runner.coinsTaken;
+      runnerLife.textContent = runner.life;
+      runnerBombs.textContent = runner.bombsHeld;
+      runnerAlly.textContent = runner.allyTime > 0 ? '同行' : 'なし';
     }
 
-    function updateStats() {
-      scoreCount.textContent = score;
-      roundCount.textContent = round;
-      streakCount.textContent = streak;
+    function rectsOverlap(a, b) {
+      return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
     }
 
-    function chooseQuestion() {
-      answered = false;
-      currentQuestion = prefectures[Math.floor(Math.random() * prefectures.length)];
-      clueImage.src = makeClueImage(currentQuestion);
-      clueImage.alt = `${currentQuestion.clue}を描いた都道府県クイズのヒント画像`;
-      nextButton.disabled = true;
-      setResult('ヒント画像を見て、関東マップ上で答えをクリックしてください。');
-    }
-
-    function startGame() {
-      score = 0;
-      round = 1;
-      streak = 0;
-      updateStats();
-      chooseQuestion();
-    }
-
-    function nextQuestion() {
-      round += 1;
-      updateStats();
-      chooseQuestion();
-    }
-
-    function answerPrefecture(selected) {
-      if (!currentQuestion || answered) return;
-      answered = true;
-      if (selected === currentQuestion.name) {
-        score += 1;
-        streak += 1;
-        setResult(`正解です。答えは${currentQuestion.name}でした。`, 'correct');
-      } else {
-        streak = 0;
-        setResult(`不正解です。クリックした場所は${selected}、正解は${currentQuestion.name}でした。`, 'wrong');
+    function groundYAt(x) {
+      let y = 456;
+      for (const platform of runner.platforms) {
+        if (x >= platform.x && x <= platform.x + platform.w && platform.y < y) y = platform.y;
       }
-      updateStats();
-      nextButton.disabled = false;
+      return y;
     }
 
-    clueImage.src = makeClueImage(prefectures[0]);
-    clueImage.alt = '都道府県クイズのヒント画像';
-    startButton.addEventListener('click', startGame);
-    nextButton.addEventListener('click', nextQuestion);
-    prefectureAreas.forEach((area) => {
-      area.addEventListener('click', () => answerPrefecture(area.dataset.name));
-      area.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          answerPrefecture(area.dataset.name);
+    function hitPlayer() {
+      const p = runner.player;
+      if (p.invincible > 0) return;
+      runner.life -= 1;
+      p.invincible = 1.2;
+      p.vy = -360;
+      p.vx = -220 * p.facing;
+    }
+
+    function spawnPickup() {
+      const type = Math.random() < 0.58 ? 'bomb' : 'ally';
+      const x = 170 + Math.random() * 690;
+      const ground = groundYAt(x);
+      runner.pickups.push({ type, x, y: ground - 28, w: 28, h: 28 });
+    }
+
+    function damageEnemy(enemy, amount) {
+      enemy.hp -= amount;
+      enemy.attack = 0.12;
+      if (enemy.hp <= 0) {
+        enemy.dead = true;
+        runner.score += enemy.type === 'archer' ? 180 : 140;
+      }
+    }
+
+    function useBomb() {
+      if (runner.bombsHeld <= 0 || !runner.running) return;
+      const p = runner.player;
+      runner.bombsHeld -= 1;
+      runner.bombs.push({ x: p.x + p.w / 2, y: p.y + 18, r: 8, vx: p.facing * 340, vy: -280, fuse: 0.85 });
+      updateRunnerHud();
+    }
+
+    function stepRunner(timestamp) {
+      if (!runner.running) return;
+      const dt = Math.min((timestamp - runner.lastTime) / 1000 || 0, 0.033);
+      runner.lastTime = timestamp;
+      const p = runner.player;
+      const speed = 260;
+      p.vx = 0;
+      if (keys.has('left') || keys.has('a')) p.vx -= speed;
+      if (keys.has('right') || keys.has('d')) p.vx += speed;
+      if (p.vx !== 0) p.facing = p.vx > 0 ? 1 : -1;
+      if ((keys.has('up') || keys.has(' ') || keys.has('w')) && p.grounded) {
+        p.vy = -620;
+        p.grounded = false;
+      }
+      if (keys.has('z') || keys.has('j')) {
+        p.attack = Math.max(p.attack, 0.18);
+      }
+      p.vy += 1500 * dt;
+      p.x += p.vx * dt;
+      p.y += p.vy * dt;
+      p.x = Math.max(12, Math.min(906, p.x));
+      p.grounded = false;
+      for (const platform of runner.platforms) {
+        const wasAbove = p.y + p.h - p.vy * dt <= platform.y;
+        if (rectsOverlap(p, platform) && p.vy >= 0 && wasAbove) {
+          p.y = platform.y - p.h;
+          p.vy = 0;
+          p.grounded = true;
         }
-      });
+      }
+      if (p.y > 560) {
+        runner.life -= 1;
+        p.x = 120;
+        p.y = 392;
+        p.vy = 0;
+        p.invincible = 1.2;
+      }
+      if (p.invincible > 0) p.invincible -= dt;
+      if (p.attack > 0) p.attack -= dt;
+      for (const coin of runner.coins) {
+        if (!coin.taken && rectsOverlap(p, { x: coin.x - coin.r, y: coin.y - coin.r, w: coin.r * 2, h: coin.r * 2 })) {
+          coin.taken = true;
+          runner.coinsTaken += 1;
+          runner.score += 100;
+        }
+      }
+      const swordBox = {
+        x: p.facing > 0 ? p.x + p.w : p.x - 38,
+        y: p.y + 12,
+        w: 38,
+        h: 24
+      };
+      for (const enemy of runner.enemies) {
+        if (enemy.dead) continue;
+        if (enemy.type === 'sword') {
+          enemy.x += enemy.vx * dt;
+          if (enemy.x < 260 || enemy.x > 900) enemy.vx *= -1;
+          enemy.cooldown -= dt;
+          if (Math.abs((enemy.x + enemy.w / 2) - (p.x + p.w / 2)) < 62 && Math.abs(enemy.y - p.y) < 36) {
+            enemy.attack = 0.22;
+            if (enemy.cooldown <= 0) {
+              hitPlayer();
+              enemy.cooldown = 1.1;
+            }
+          }
+        } else {
+          enemy.cooldown -= dt;
+          if (enemy.cooldown <= 0) {
+            const direction = p.x < enemy.x ? -1 : 1;
+            runner.arrows.push({ x: enemy.x + enemy.w / 2, y: enemy.y + 18, w: 26, h: 6, vx: direction * 250 });
+            enemy.attack = 0.18;
+            enemy.cooldown = 1.6;
+          }
+        }
+        if (p.attack > 0 && rectsOverlap(swordBox, enemy)) damageEnemy(enemy, 1);
+        if (runner.allyTime > 0 && Math.abs(enemy.x - (p.x - 42)) < 70 && Math.abs(enemy.y - p.y) < 50) damageEnemy(enemy, 0.015);
+        if (rectsOverlap(p, enemy) && enemy.type === 'sword') hitPlayer();
+      }
+      runner.enemies = runner.enemies.filter((enemy) => !enemy.dead);
+      for (const arrow of runner.arrows) {
+        arrow.x += arrow.vx * dt;
+        if (rectsOverlap(p, arrow)) {
+          arrow.dead = true;
+          hitPlayer();
+        }
+      }
+      runner.arrows = runner.arrows.filter((arrow) => !arrow.dead && arrow.x > -40 && arrow.x < 1000);
+      for (const bomb of runner.bombs) {
+        bomb.vy += 900 * dt;
+        bomb.x += bomb.vx * dt;
+        bomb.y += bomb.vy * dt;
+        const ground = groundYAt(bomb.x);
+        if (bomb.y + bomb.r > ground) {
+          bomb.y = ground - bomb.r;
+          bomb.vy *= -0.28;
+          bomb.vx *= 0.72;
+        }
+        bomb.fuse -= dt;
+        if (bomb.fuse <= 0) {
+          bomb.explode = 0.25;
+          for (const enemy of runner.enemies) {
+            const dx = enemy.x + enemy.w / 2 - bomb.x;
+            const dy = enemy.y + enemy.h / 2 - bomb.y;
+            if (Math.hypot(dx, dy) < 118) damageEnemy(enemy, 3);
+          }
+        }
+      }
+      runner.bombs = runner.bombs.filter((bomb) => !bomb.explode);
+      for (const pickup of runner.pickups) {
+        if (rectsOverlap(p, pickup)) {
+          pickup.taken = true;
+          if (pickup.type === 'bomb') runner.bombsHeld += 1;
+          if (pickup.type === 'ally') runner.allyTime = 12;
+        }
+      }
+      runner.pickups = runner.pickups.filter((pickup) => !pickup.taken);
+      if (runner.allyTime > 0) runner.allyTime -= dt;
+      runner.spawnTimer += dt;
+      if (runner.spawnTimer > 4 && runner.coins.every((coin) => coin.taken)) {
+        runner.spawnTimer = 0;
+        runner.coins.forEach((coin) => {
+          coin.taken = false;
+          coin.x = 170 + Math.random() * 680;
+          coin.y = 220 + Math.random() * 170;
+        });
+      }
+      runner.pickupTimer += dt;
+      if (runner.pickupTimer > 5 && runner.pickups.length < 3) {
+        runner.pickupTimer = 0;
+        spawnPickup();
+      }
+      if (runner.enemies.length < 2 && runner.spawnTimer > 2.2) {
+        runner.enemies.push({ type: Math.random() < 0.55 ? 'sword' : 'archer', x: 850, y: 402, w: 38, h: 54, vx: -70 - Math.random() * 50, hp: 2, cooldown: 1.2, attack: 0 });
+      }
+      runner.score += dt * 8;
+      if (runner.life <= 0) {
+        runner.running = false;
+        runnerState.textContent = '終了';
+      }
+      updateRunnerHud();
+      drawRunner();
+      requestAnimationFrame(stepRunner);
+    }
+
+    function drawRunner() {
+      const ctx = runnerCtx;
+      ctx.clearRect(0, 0, runnerCanvas.width, runnerCanvas.height);
+      const sky = ctx.createLinearGradient(0, 0, 0, 540);
+      sky.addColorStop(0, '#172230');
+      sky.addColorStop(0.62, '#66412b');
+      sky.addColorStop(1, '#c39a45');
+      ctx.fillStyle = sky;
+      ctx.fillRect(0, 0, 960, 540);
+      ctx.fillStyle = 'rgba(255, 240, 196, 0.12)';
+      for (let i = 0; i < 9; i += 1) {
+        ctx.beginPath();
+        ctx.arc(80 + i * 120, 74 + (i % 3) * 28, 38, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.fillStyle = '#2a1b13';
+      for (const platform of runner.platforms) {
+        ctx.fillRect(platform.x, platform.y, platform.w, platform.h);
+        ctx.fillStyle = '#c39a45';
+        ctx.fillRect(platform.x, platform.y, platform.w, 8);
+        ctx.fillStyle = '#2a1b13';
+      }
+      for (const coin of runner.coins) {
+        if (coin.taken) continue;
+        ctx.fillStyle = '#f2cd60';
+        ctx.beginPath();
+        ctx.arc(coin.x, coin.y, coin.r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#5e4218';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+      }
+      for (const pickup of runner.pickups) {
+        ctx.fillStyle = pickup.type === 'bomb' ? '#232020' : '#2f6b3f';
+        ctx.beginPath();
+        ctx.arc(pickup.x + 14, pickup.y + 14, 15, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#fff0bf';
+        ctx.font = '900 17px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(pickup.type === 'bomb' ? '爆' : '友', pickup.x + 14, pickup.y + 20);
+        ctx.textAlign = 'start';
+      }
+      for (const bomb of runner.bombs) {
+        ctx.fillStyle = '#171312';
+        ctx.beginPath();
+        ctx.arc(bomb.x, bomb.y, bomb.r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#f0d08b';
+        ctx.stroke();
+      }
+      for (const arrow of runner.arrows) {
+        ctx.fillStyle = '#e6d2a6';
+        ctx.fillRect(arrow.x, arrow.y, arrow.w, arrow.h);
+        ctx.fillStyle = '#8f241d';
+        ctx.fillRect(arrow.vx > 0 ? arrow.x + arrow.w : arrow.x - 6, arrow.y - 3, 8, 12);
+      }
+      for (const enemy of runner.enemies) {
+        ctx.fillStyle = enemy.type === 'archer' ? '#305a6d' : '#8f241d';
+        ctx.fillRect(enemy.x, enemy.y, enemy.w, enemy.h);
+        ctx.fillStyle = '#f0d08b';
+        ctx.fillRect(enemy.x + 8, enemy.y + 6, 22, 10);
+        ctx.fillStyle = enemy.type === 'archer' ? '#1a1410' : '#e6d2a6';
+        if (enemy.type === 'archer') {
+          ctx.strokeStyle = '#e6d2a6';
+          ctx.lineWidth = 4;
+          ctx.beginPath();
+          ctx.arc(enemy.x + 18, enemy.y + 28, 18, -1.2, 1.2);
+          ctx.stroke();
+        } else {
+          ctx.fillRect(enemy.x - 18, enemy.y + 22, 42, 6);
+        }
+      }
+      if (runner.allyTime > 0) {
+        ctx.fillStyle = '#2f6b3f';
+        ctx.fillRect(runner.player.x - 52, runner.player.y + 12, 34, 42);
+        ctx.fillStyle = '#f0d08b';
+        ctx.fillRect(runner.player.x - 45, runner.player.y + 18, 20, 10);
+      }
+      const p = runner.player;
+      ctx.save();
+      ctx.globalAlpha = p.invincible > 0 && Math.floor(p.invincible * 12) % 2 === 0 ? 0.45 : 1;
+      ctx.fillStyle = '#f0d08b';
+      ctx.fillRect(p.x + 8, p.y + 4, 26, 22);
+      ctx.fillStyle = '#243244';
+      ctx.fillRect(p.x, p.y + 24, p.w, 30);
+      ctx.fillStyle = '#9b332c';
+      ctx.fillRect(p.x - 8, p.y + 20, 58, 8);
+      if (p.attack > 0) {
+        ctx.fillStyle = '#f5e6b5';
+        const sx = p.facing > 0 ? p.x + p.w : p.x - 44;
+        ctx.fillRect(sx, p.y + 20, 46, 7);
+      }
+      ctx.restore();
+      ctx.fillStyle = 'rgba(255, 247, 224, 0.92)';
+      ctx.font = '700 22px sans-serif';
+      ctx.fillText('← → 移動 / ↑ Space ジャンプ / Z 剣 / X 爆弾', 24, 36);
+      if (!runner.running) {
+        ctx.fillStyle = 'rgba(20, 12, 6, 0.55)';
+        ctx.fillRect(0, 0, 960, 540);
+        ctx.fillStyle = '#fff0bf';
+        ctx.font = '900 44px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(runner.life <= 0 ? 'ゲーム終了' : '小判ランナー', 480, 250);
+        ctx.font = '700 24px sans-serif';
+        ctx.fillText('剣と爆弾で敵を倒しながら進む', 480, 294);
+        ctx.textAlign = 'start';
+      }
+    }
+
+    function startRunner() {
+      if (runner.life <= 0) resetRunner();
+      runner.running = true;
+      runner.lastTime = performance.now();
+      runnerState.textContent = 'プレイ中';
+      requestAnimationFrame(stepRunner);
+    }
+
+    window.addEventListener('keydown', (event) => {
+      const keyMap = { ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ' ': ' ' };
+      const key = keyMap[event.key] || event.key.toLowerCase();
+      if (['left', 'right', 'up', ' ', 'a', 'd', 'w', 'z', 'j', 'x', 'k'].includes(key)) {
+        keys.add(key);
+        if (key === 'x' || key === 'k') useBomb();
+        if (event.key === ' ' || event.key.startsWith('Arrow')) event.preventDefault();
+      }
     });
+    window.addEventListener('keyup', (event) => {
+      const keyMap = { ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ' ': ' ' };
+      keys.delete(keyMap[event.key] || event.key.toLowerCase());
+    });
+    runnerStart.addEventListener('click', startRunner);
+    runnerReset.addEventListener('click', resetRunner);
+    resetRunner();
   </script>
 </body>
 </html>

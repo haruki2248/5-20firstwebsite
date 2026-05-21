@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>日本全土 | 都道府県クイズ</title>
+  <title>関東地方 | 都道府県クイズ</title>
   <style>
     :root {
       --ink: #1a1410;
@@ -251,32 +251,10 @@
       box-shadow: inset 0 0 0 1px rgba(255, 247, 224, 0.42);
     }
 
-    .api-row {
-      display: grid;
-      gap: 8px;
-    }
-
-    .api-row label,
     .game-stat span {
       color: var(--muted);
       font-size: 0.92rem;
       font-weight: 800;
-    }
-
-    .api-controls {
-      display: flex;
-      gap: 10px;
-    }
-
-    input {
-      width: 100%;
-      min-height: 44px;
-      padding: 0 12px;
-      border: 2px solid var(--ink);
-      border-radius: 8px;
-      background: rgba(255, 248, 232, 0.94);
-      color: var(--ink);
-      font: inherit;
     }
 
     .clue-image {
@@ -327,7 +305,9 @@
       color: #6d1f1a;
     }
 
-    .google-map-frame {
+    .kanto-map-frame {
+      display: grid;
+      place-items: center;
       width: 100%;
       height: min(68vh, 520px);
       min-height: 360px;
@@ -336,6 +316,40 @@
       box-shadow:
         inset 0 0 0 1px rgba(255, 247, 224, 0.42),
         0 14px 32px rgba(20, 12, 6, 0.22);
+    }
+
+    .kanto-map {
+      width: min(100%, 560px);
+      height: auto;
+    }
+
+    .kanto-pref {
+      fill: rgba(195, 154, 69, 0.58);
+      stroke: rgba(26, 20, 16, 0.84);
+      stroke-width: 3;
+      cursor: pointer;
+      transition: fill 0.18s ease, transform 0.18s ease, filter 0.18s ease;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+
+    .kanto-pref:hover,
+    .kanto-pref:focus {
+      fill: rgba(123, 36, 31, 0.72);
+      filter: drop-shadow(0 7px 8px rgba(20, 12, 6, 0.28));
+      outline: none;
+      transform: scale(1.02);
+    }
+
+    .kanto-label {
+      pointer-events: none;
+      fill: #fff0bf;
+      font-size: 21px;
+      font-weight: 900;
+      paint-order: stroke;
+      stroke: rgba(26, 20, 16, 0.74);
+      stroke-width: 4px;
+      text-anchor: middle;
     }
 
     @media (max-width: 860px) {
@@ -391,17 +405,8 @@
         padding: 16px;
       }
 
-      .google-map-frame {
+      .kanto-map-frame {
         min-height: 320px;
-      }
-
-      .api-controls,
-      .game-stats {
-        grid-template-columns: 1fr;
-      }
-
-      .api-controls {
-        flex-direction: column;
       }
     }
   </style>
@@ -411,7 +416,7 @@
     <header class="site-header">
       <div class="brand">
         <span class="brand-mark" aria-hidden="true">日</span>
-        <span>日本全土</span>
+        <span>関東地方</span>
       </div>
       <nav class="nav-links" aria-label="ページ内メニュー">
         <a href="#about">About</a>
@@ -421,8 +426,8 @@
 
     <section class="hero" aria-labelledby="page-title">
       <div>
-        <h1 id="page-title">日本を<br>見つける</h1>
-        <p class="lead">Google Mapsで日本全体を表示し、拡大・縮小や移動をしながら各地を確認できるシンプルなWebサイトです。</p>
+        <h1 id="page-title">関東を<br>当てる</h1>
+        <p class="lead">関東地方の特産品や観光地のヒント画像を見て、地図上の都県をクリックして答えるクイズです。</p>
         <div class="hero-actions">
           <a class="button primary" href="#map">ゲームを始める</a>
           <a class="button" href="#about">サイトについて</a>
@@ -431,29 +436,22 @@
 
       <section id="about" class="profile" aria-labelledby="about-title">
         <h2 id="about-title">About</h2>
-        <p>GitHub Pagesで公開できる、都道府県クイズです。ヒント画像を見て、Google Map上で答えだと思う都道府県をクリックします。</p>
+        <p>GitHub Pagesで公開できる、関東地方だけの都県クイズです。APIキーなしで、ページを開くだけで遊べます。</p>
       </section>
     </section>
 
     <section id="map" class="google-map-section" aria-labelledby="google-map-title">
       <div class="google-map-header">
         <div>
-          <h2 id="google-map-title">都道府県クイズ</h2>
-          <p>特産品や観光地のヒント画像を見て、Google Mapで該当する都道府県をクリックしてください。</p>
+          <h2 id="google-map-title">関東地方クイズ</h2>
+          <p>特産品や観光地のヒント画像を見て、該当する都県を関東マップでクリックしてください。</p>
         </div>
       </div>
       <div class="game-layout">
         <aside class="game-panel" aria-label="クイズ操作パネル">
-          <div class="api-row">
-            <label for="api-key">Google Maps APIキー</label>
-            <div class="api-controls">
-              <input id="api-key" type="password" autocomplete="off" placeholder="APIキーを入力">
-              <button id="load-map" type="button">地図を起動</button>
-            </div>
-          </div>
           <img id="clue-image" class="clue-image" alt="都道府県クイズのヒント画像">
           <div class="hero-actions">
-            <button id="start-game" class="primary" type="button" disabled>ゲーム開始</button>
+            <button id="start-game" class="primary" type="button">ゲーム開始</button>
             <button id="next-question" type="button" disabled>次の問題</button>
           </div>
           <div class="game-stats">
@@ -461,76 +459,40 @@
             <div class="game-stat"><span>正解</span><strong id="score-count">0</strong></div>
             <div class="game-stat"><span>連続</span><strong id="streak-count">0</strong></div>
           </div>
-          <div id="result" class="result-box">APIキーを入力して地図を起動してください。</div>
+          <div id="result" class="result-box">ゲーム開始ボタンを押してください。</div>
         </aside>
-        <div id="google-map" class="google-map-frame" role="application" aria-label="回答用Google Map"></div>
+        <div class="kanto-map-frame" role="application" aria-label="回答用関東地方マップ">
+          <svg class="kanto-map" viewBox="0 0 560 520" role="img" aria-label="関東地方のクリックマップ">
+            <path class="kanto-pref" data-name="群馬県" d="M126 72 L248 54 L304 118 L274 210 L175 230 L104 178 Z" tabindex="0" />
+            <path class="kanto-pref" data-name="栃木県" d="M304 70 L430 92 L456 190 L382 260 L274 210 L304 118 Z" tabindex="0" />
+            <path class="kanto-pref" data-name="茨城県" d="M430 92 L505 158 L488 330 L414 372 L382 260 L456 190 Z" tabindex="0" />
+            <path class="kanto-pref" data-name="埼玉県" d="M175 230 L274 210 L382 260 L350 330 L218 342 L146 292 Z" tabindex="0" />
+            <path class="kanto-pref" data-name="東京都" d="M218 342 L350 330 L368 382 L282 408 L198 382 Z" tabindex="0" />
+            <path class="kanto-pref" data-name="千葉県" d="M368 382 L414 372 L488 330 L510 438 L456 490 L386 446 Z" tabindex="0" />
+            <path class="kanto-pref" data-name="神奈川県" d="M198 382 L282 408 L386 446 L336 486 L196 458 L148 410 Z" tabindex="0" />
+            <text class="kanto-label" x="198" y="150">群馬</text>
+            <text class="kanto-label" x="366" y="166">栃木</text>
+            <text class="kanto-label" x="438" y="268">茨城</text>
+            <text class="kanto-label" x="260" y="292">埼玉</text>
+            <text class="kanto-label" x="288" y="372">東京</text>
+            <text class="kanto-label" x="438" y="424">千葉</text>
+            <text class="kanto-label" x="270" y="448">神奈川</text>
+          </svg>
+        </div>
       </div>
     </section>
   </main>
   <script>
     const prefectures = [
-      { name: '北海道', clue: 'ラベンダー畑と雪山', colorA: '#6c4c91', colorB: '#d7edf6', icon: '花' },
-      { name: '青森県', clue: 'ねぶた祭とりんご', colorA: '#b7252a', colorB: '#f1c27d', icon: '祭' },
-      { name: '岩手県', clue: '中尊寺金色堂とわんこそば', colorA: '#8b6b2f', colorB: '#efe1b7', icon: '金' },
-      { name: '宮城県', clue: '松島と牛たん', colorA: '#2c6070', colorB: '#d8b071', icon: '島' },
-      { name: '秋田県', clue: 'なまはげと稲穂', colorA: '#7a1f1d', colorB: '#d5a83f', icon: '稲' },
-      { name: '山形県', clue: 'さくらんぼと蔵王', colorA: '#c53145', colorB: '#e9eef2', icon: '桜' },
-      { name: '福島県', clue: '赤べこと会津', colorA: '#9a1f1b', colorB: '#ded0b0', icon: '赤' },
       { name: '茨城県', clue: '偕楽園の梅と納豆', colorA: '#8d2e63', colorB: '#c9b36b', icon: '梅' },
       { name: '栃木県', clue: '日光東照宮といちご', colorA: '#7d3226', colorB: '#f0c7c2', icon: '宮' },
       { name: '群馬県', clue: '草津温泉とだるま', colorA: '#bf3428', colorB: '#f4e2b8', icon: '湯' },
       { name: '埼玉県', clue: '川越の蔵造りと草加せんべい', colorA: '#6d4a2b', colorB: '#d2ab65', icon: '蔵' },
       { name: '千葉県', clue: '落花生と海辺', colorA: '#b9823f', colorB: '#8dc4d5', icon: '海' },
       { name: '東京都', clue: '東京タワーと都心の夜景', colorA: '#9b2d27', colorB: '#171d2d', icon: '塔' },
-      { name: '神奈川県', clue: '富士山を望む箱根と横浜港', colorA: '#254b6a', colorB: '#d9e1e8', icon: '港' },
-      { name: '新潟県', clue: '米どころと雪国', colorA: '#d4c78f', colorB: '#edf4f7', icon: '米' },
-      { name: '富山県', clue: '立山連峰と黒部峡谷', colorA: '#3e6078', colorB: '#dce8ee', icon: '山' },
-      { name: '石川県', clue: '兼六園と金箔', colorA: '#9d7b2f', colorB: '#efe2ad', icon: '箔' },
-      { name: '福井県', clue: '恐竜博物館と越前がに', colorA: '#356b4f', colorB: '#d66b4a', icon: '恐' },
-      { name: '山梨県', clue: '富士山とぶどう', colorA: '#4d3f8f', colorB: '#d9e5f1', icon: '富' },
-      { name: '長野県', clue: '信州そばと北アルプス', colorA: '#6d8060', colorB: '#e6e2cd', icon: '蕎' },
-      { name: '岐阜県', clue: '白川郷と飛騨牛', colorA: '#5f4a32', colorB: '#e8dcc5', icon: '郷' },
-      { name: '静岡県', clue: '茶畑と富士山', colorA: '#3d7a45', colorB: '#e7f0d4', icon: '茶' },
-      { name: '愛知県', clue: '名古屋城と味噌かつ', colorA: '#a5772f', colorB: '#51352b', icon: '城' },
-      { name: '三重県', clue: '伊勢神宮と真珠', colorA: '#324f55', colorB: '#eadfc7', icon: '勢' },
-      { name: '滋賀県', clue: '琵琶湖と近江牛', colorA: '#356f8d', colorB: '#d8e8ef', icon: '湖' },
-      { name: '京都府', clue: '清水寺と抹茶', colorA: '#6d3d2d', colorB: '#9fb36d', icon: '京' },
-      { name: '大阪府', clue: '通天閣とたこ焼き', colorA: '#c77722', colorB: '#223756', icon: '阪' },
-      { name: '兵庫県', clue: '姫路城と神戸港', colorA: '#2e5d77', colorB: '#f1efe2', icon: '姫' },
-      { name: '奈良県', clue: '大仏と鹿', colorA: '#7b5d3b', colorB: '#d9c59b', icon: '鹿' },
-      { name: '和歌山県', clue: '熊野古道とみかん', colorA: '#d0822e', colorB: '#496b4c', icon: '熊' },
-      { name: '鳥取県', clue: '鳥取砂丘と梨', colorA: '#c49a5a', colorB: '#eadfc3', icon: '砂' },
-      { name: '島根県', clue: '出雲大社としじみ', colorA: '#6d2f2a', colorB: '#cbb67c', icon: '社' },
-      { name: '岡山県', clue: '桃太郎と白桃', colorA: '#d88a9a', colorB: '#e7d9b9', icon: '桃' },
-      { name: '広島県', clue: '厳島神社ともみじ饅頭', colorA: '#b43328', colorB: '#e7b86b', icon: '鳥' },
-      { name: '山口県', clue: 'ふぐと錦帯橋', colorA: '#3e6b7a', colorB: '#d9c18d', icon: '橋' },
-      { name: '徳島県', clue: '阿波おどりとすだち', colorA: '#5a3f8e', colorB: '#9cbf4a', icon: '踊' },
-      { name: '香川県', clue: '讃岐うどんと瀬戸内海', colorA: '#e0c47a', colorB: '#5d93ad', icon: '饂' },
-      { name: '愛媛県', clue: 'みかんと道後温泉', colorA: '#d77b2e', colorB: '#f0d29b', icon: '蜜' },
-      { name: '高知県', clue: '桂浜とかつお', colorA: '#1f5d78', colorB: '#d7a04e', icon: '鰹' },
-      { name: '福岡県', clue: '屋台と明太子', colorA: '#b12e31', colorB: '#22283b', icon: '屋' },
-      { name: '佐賀県', clue: '有田焼とバルーン', colorA: '#315f8c', colorB: '#f2efe4', icon: '陶' },
-      { name: '長崎県', clue: 'グラバー園とカステラ', colorA: '#6b4c32', colorB: '#e4bd6a', icon: '崎' },
-      { name: '熊本県', clue: '熊本城とからし蓮根', colorA: '#1f1c17', colorB: '#d5a241', icon: '熊' },
-      { name: '大分県', clue: '別府温泉と地獄めぐり', colorA: '#8d332f', colorB: '#d9d4c2', icon: '泉' },
-      { name: '宮崎県', clue: '高千穂峡とマンゴー', colorA: '#2d6b56', colorB: '#e59735', icon: '峡' },
-      { name: '鹿児島県', clue: '桜島と黒豚', colorA: '#4a4a43', colorB: '#d6a54b', icon: '島' },
-      { name: '沖縄県', clue: '首里城と青い海', colorA: '#1e8aa3', colorB: '#c84835', icon: '琉' }
+      { name: '神奈川県', clue: '横浜港と箱根', colorA: '#254b6a', colorB: '#d9e1e8', icon: '港' }
     ];
 
-    const englishPrefectureMap = {
-      Hokkaido: '北海道', Aomori: '青森県', Iwate: '岩手県', Miyagi: '宮城県', Akita: '秋田県', Yamagata: '山形県', Fukushima: '福島県',
-      Ibaraki: '茨城県', Tochigi: '栃木県', Gunma: '群馬県', Saitama: '埼玉県', Chiba: '千葉県', Tokyo: '東京都', Kanagawa: '神奈川県',
-      Niigata: '新潟県', Toyama: '富山県', Ishikawa: '石川県', Fukui: '福井県', Yamanashi: '山梨県', Nagano: '長野県', Gifu: '岐阜県',
-      Shizuoka: '静岡県', Aichi: '愛知県', Mie: '三重県', Shiga: '滋賀県', Kyoto: '京都府', Osaka: '大阪府', Hyogo: '兵庫県',
-      Nara: '奈良県', Wakayama: '和歌山県', Tottori: '鳥取県', Shimane: '島根県', Okayama: '岡山県', Hiroshima: '広島県',
-      Yamaguchi: '山口県', Tokushima: '徳島県', Kagawa: '香川県', Ehime: '愛媛県', Kochi: '高知県', Fukuoka: '福岡県',
-      Saga: '佐賀県', Nagasaki: '長崎県', Kumamoto: '熊本県', Oita: '大分県', Miyazaki: '宮崎県', Kagoshima: '鹿児島県', Okinawa: '沖縄県'
-    };
-
-    let map;
-    let geocoder;
-    let marker;
     let currentQuestion;
     let score = 0;
     let round = 0;
@@ -544,8 +506,7 @@
     const streakCount = document.getElementById('streak-count');
     const startButton = document.getElementById('start-game');
     const nextButton = document.getElementById('next-question');
-    const loadMapButton = document.getElementById('load-map');
-    const apiKeyInput = document.getElementById('api-key');
+    const prefectureAreas = document.querySelectorAll('.kanto-pref');
 
     function makeClueImage(prefecture) {
       const svg = `
@@ -589,8 +550,7 @@
       clueImage.src = makeClueImage(currentQuestion);
       clueImage.alt = `${currentQuestion.clue}を描いた都道府県クイズのヒント画像`;
       nextButton.disabled = true;
-      setResult('ヒント画像を見て、Google Map上で答えをクリックしてください。');
-      if (marker) marker.setMap(null);
+      setResult('ヒント画像を見て、関東マップ上で答えをクリックしてください。');
     }
 
     function startGame() {
@@ -607,88 +567,34 @@
       chooseQuestion();
     }
 
-    function normalizePrefecture(name) {
-      if (!name) return '';
-      const cleaned = name.replace(/\s+Prefecture$/i, '').replace(/\s+Metropolis$/i, '').trim();
-      if (englishPrefectureMap[cleaned]) return englishPrefectureMap[cleaned];
-      return cleaned;
-    }
-
-    function extractPrefecture(results) {
-      for (const item of results) {
-        for (const component of item.address_components) {
-          if (component.types.includes('administrative_area_level_1')) {
-            return normalizePrefecture(component.long_name);
-          }
-        }
-      }
-      return '';
-    }
-
-    function answerAt(latLng) {
+    function answerPrefecture(selected) {
       if (!currentQuestion || answered) return;
-      geocoder.geocode({ location: latLng }, (results, status) => {
-        if (status !== 'OK' || !results.length) {
-          setResult('この場所の都道府県を判定できませんでした。日本国内をクリックしてください。', 'wrong');
-          return;
-        }
-        const selected = extractPrefecture(results);
-        if (!selected) {
-          setResult('都道府県を読み取れませんでした。別の場所をクリックしてください。', 'wrong');
-          return;
-        }
-        answered = true;
-        marker = new google.maps.Marker({ position: latLng, map });
-        if (selected === currentQuestion.name) {
-          score += 1;
-          streak += 1;
-          setResult(`正解です。答えは${currentQuestion.name}でした。`, 'correct');
-        } else {
-          streak = 0;
-          setResult(`不正解です。クリックした場所は${selected}、正解は${currentQuestion.name}でした。`, 'wrong');
-        }
-        updateStats();
-        nextButton.disabled = false;
-      });
-    }
-
-    window.initQuizMap = function () {
-      geocoder = new google.maps.Geocoder();
-      map = new google.maps.Map(document.getElementById('google-map'), {
-        center: { lat: 37.8, lng: 138.2 },
-        zoom: 5,
-        mapTypeControl: false,
-        streetViewControl: false,
-        fullscreenControl: true
-      });
-      map.addListener('click', (event) => answerAt(event.latLng));
-      startButton.disabled = false;
-      setResult('地図を起動しました。ゲーム開始ボタンを押してください。');
-    };
-
-    function loadGoogleMap() {
-      const key = apiKeyInput.value.trim();
-      if (!key) {
-        setResult('Google Maps JavaScript APIキーを入力してください。', 'wrong');
-        return;
+      answered = true;
+      if (selected === currentQuestion.name) {
+        score += 1;
+        streak += 1;
+        setResult(`正解です。答えは${currentQuestion.name}でした。`, 'correct');
+      } else {
+        streak = 0;
+        setResult(`不正解です。クリックした場所は${selected}、正解は${currentQuestion.name}でした。`, 'wrong');
       }
-      loadMapButton.disabled = true;
-      const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(key)}&callback=initQuizMap&language=ja&region=JP`;
-      script.async = true;
-      script.defer = true;
-      script.onerror = () => {
-        loadMapButton.disabled = false;
-        setResult('Google Mapsを読み込めませんでした。APIキーや制限設定を確認してください。', 'wrong');
-      };
-      document.head.appendChild(script);
+      updateStats();
+      nextButton.disabled = false;
     }
 
     clueImage.src = makeClueImage(prefectures[0]);
     clueImage.alt = '都道府県クイズのヒント画像';
-    loadMapButton.addEventListener('click', loadGoogleMap);
     startButton.addEventListener('click', startGame);
     nextButton.addEventListener('click', nextQuestion);
+    prefectureAreas.forEach((area) => {
+      area.addEventListener('click', () => answerPrefecture(area.dataset.name));
+      area.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          answerPrefecture(area.dataset.name);
+        }
+      });
+    });
   </script>
 </body>
 </html>

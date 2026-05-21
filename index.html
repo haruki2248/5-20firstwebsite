@@ -360,7 +360,7 @@
     <section class="hero" aria-labelledby="page-title">
       <div>
         <h1 id="page-title">武士道</h1>
-        <p class="lead">古風な世界を走り抜け、小判を集めながら障害物を避ける2次元アクションゲームです。</p>
+        <p class="lead">古風な世界を自動で進み、小判を集めながら敵を退ける2次元アクションゲームです。</p>
         <div class="hero-actions">
           <a class="button primary" href="#action-game">ゲームを始める</a>
           <a class="button" href="#about">サイトについて</a>
@@ -369,7 +369,7 @@
 
       <section id="about" class="profile" aria-labelledby="about-title">
         <h2 id="about-title">About</h2>
-        <p>GitHub Pagesで公開できる、HTMLだけの2次元アクションゲームです。キーボードで移動とジャンプを操作できます。</p>
+        <p>GitHub Pagesで公開できる、HTMLだけの2次元アクションゲームです。自動スクロールする道をキーボードで攻略できます。</p>
       </section>
     </section>
 
@@ -377,7 +377,7 @@
       <div class="action-game-header">
         <div>
           <h2 id="action-game-title">武士道</h2>
-          <p>剣と爆弾を使い、敵をかわしながら小判を集める2次元アクションゲームです。</p>
+          <p>剣と爆弾を使い、流れてくる敵や足場をかわしながら小判を集める自動スクロールアクションです。</p>
         </div>
       </div>
       <div class="arcade-wrap">
@@ -430,11 +430,19 @@
       running: false,
       lastTime: 0,
       spawnTimer: 0,
-      pickupTimer: 0
+      pickupTimer: 0,
+      scrollSpeed: 130,
+      distance: 0
     };
 
     function resetRunner() {
       runner.player = { x: 120, y: 392, w: 42, h: 54, vx: 0, vy: 0, facing: 1, grounded: true, invincible: 0, attack: 0 };
+      runner.platforms = [
+        { x: 0, y: 456, w: 960, h: 84, fixed: true },
+        { x: 250, y: 358, w: 160, h: 22 },
+        { x: 520, y: 300, w: 170, h: 22 },
+        { x: 740, y: 382, w: 130, h: 22 }
+      ];
       runner.coins = [
         { x: 300, y: 314, r: 13, taken: false },
         { x: 580, y: 256, r: 13, taken: false },
@@ -454,6 +462,8 @@
       runner.life = 3;
       runner.spawnTimer = 0;
       runner.pickupTimer = 0;
+      runner.distance = 0;
+      runner.scrollSpeed = 130;
       runnerState.textContent = '待機';
       updateRunnerHud();
       drawRunner();
@@ -531,6 +541,55 @@
       return y;
     }
 
+    function recyclePlatform(platform) {
+      platform.x = 960 + Math.random() * 320;
+      platform.y = 285 + Math.random() * 115;
+      platform.w = 120 + Math.random() * 95;
+      platform.h = 22;
+    }
+
+    function placeCoinAhead(coin) {
+      coin.taken = false;
+      coin.x = 990 + Math.random() * 460;
+      coin.y = 238 + Math.random() * 170;
+    }
+
+    function createEnemy(x = 990 + Math.random() * 360) {
+      const type = Math.random() < 0.55 ? 'sword' : 'archer';
+      return {
+        type,
+        x,
+        y: groundYAt(Math.min(x, 940)) - 54,
+        w: 38,
+        h: 54,
+        vx: type === 'sword' ? -55 - Math.random() * 45 : 0,
+        hp: 2,
+        cooldown: 1 + Math.random() * 0.7,
+        attack: 0
+      };
+    }
+
+    function scrollWorld(dt) {
+      const scroll = runner.scrollSpeed * dt;
+      runner.distance += scroll;
+      for (const platform of runner.platforms) {
+        if (platform.fixed) continue;
+        platform.x -= scroll;
+        if (platform.x + platform.w < -40) recyclePlatform(platform);
+      }
+      for (const coin of runner.coins) {
+        coin.x -= scroll;
+        if (coin.taken || coin.x < -40) placeCoinAhead(coin);
+      }
+      for (const pickup of runner.pickups) pickup.x -= scroll;
+      for (const enemy of runner.enemies) enemy.x -= scroll;
+      for (const arrow of runner.arrows) arrow.x -= scroll;
+      for (const bomb of runner.bombs) bomb.x -= scroll;
+      runner.pickups = runner.pickups.filter((pickup) => pickup.x + pickup.w > -40);
+      runner.enemies = runner.enemies.filter((enemy) => enemy.x + enemy.w > -70);
+      runner.scrollSpeed = Math.min(210, 130 + runner.distance / 420);
+    }
+
     function hitPlayer() {
       const p = runner.player;
       if (p.invincible > 0) return;
@@ -542,7 +601,7 @@
 
     function spawnPickup() {
       const type = Math.random() < 0.58 ? 'bomb' : 'ally';
-      const x = 170 + Math.random() * 690;
+      const x = 980 + Math.random() * 460;
       const ground = groundYAt(x);
       runner.pickups.push({ type, x, y: ground - 28, w: 28, h: 28 });
     }
@@ -568,6 +627,7 @@
       if (!runner.running) return;
       const dt = Math.min((timestamp - runner.lastTime) / 1000 || 0, 0.033);
       runner.lastTime = timestamp;
+      scrollWorld(dt);
       const p = runner.player;
       const speed = 260;
       p.vx = 0;
@@ -584,7 +644,7 @@
       p.vy += 1500 * dt;
       p.x += p.vx * dt;
       p.y += p.vy * dt;
-      p.x = Math.max(12, Math.min(906, p.x));
+      p.x = Math.max(48, Math.min(520, p.x));
       p.grounded = false;
       for (const platform of runner.platforms) {
         const wasAbove = p.y + p.h - p.vy * dt <= platform.y;
@@ -682,23 +742,16 @@
       runner.pickups = runner.pickups.filter((pickup) => !pickup.taken);
       if (runner.allyTime > 0) runner.allyTime -= dt;
       runner.spawnTimer += dt;
-      if (runner.spawnTimer > 4 && runner.coins.every((coin) => coin.taken)) {
-        runner.spawnTimer = 0;
-        runner.coins.forEach((coin) => {
-          coin.taken = false;
-          coin.x = 170 + Math.random() * 680;
-          coin.y = 220 + Math.random() * 170;
-        });
-      }
       runner.pickupTimer += dt;
       if (runner.pickupTimer > 5 && runner.pickups.length < 3) {
         runner.pickupTimer = 0;
         spawnPickup();
       }
       if (runner.enemies.length < 2 && runner.spawnTimer > 2.2) {
-        runner.enemies.push({ type: Math.random() < 0.55 ? 'sword' : 'archer', x: 850, y: 402, w: 38, h: 54, vx: -70 - Math.random() * 50, hp: 2, cooldown: 1.2, attack: 0 });
+        runner.spawnTimer = 0;
+        runner.enemies.push(createEnemy());
       }
-      runner.score += dt * 8;
+      runner.score += dt * 10 + runner.scrollSpeed * dt * 0.035;
       if (runner.life <= 0) {
         runner.running = false;
         runnerState.textContent = '終了';
@@ -734,12 +787,16 @@
       ctx.lineTo(0, 540);
       ctx.fill();
       ctx.fillStyle = '#5e1a16';
-      ctx.fillRect(92, 250, 28, 206);
-      ctx.fillRect(190, 250, 28, 206);
-      ctx.fillRect(70, 222, 170, 30);
-      ctx.fillRect(92, 196, 126, 24);
+      const toriiX = ((92 - runner.distance * 0.32) % 1080 + 1080) % 1080 - 120;
+      ctx.fillRect(toriiX, 250, 28, 206);
+      ctx.fillRect(toriiX + 98, 250, 28, 206);
+      ctx.fillRect(toriiX - 22, 222, 170, 30);
+      ctx.fillRect(toriiX, 196, 126, 24);
       ctx.fillStyle = 'rgba(255, 240, 196, 0.12)';
-      for (let i = 0; i < 7; i += 1) ctx.fillRect(40 + i * 150, 120 + (i % 2) * 34, 72, 10);
+      for (let i = 0; i < 8; i += 1) {
+        const cloudX = ((40 + i * 150 - runner.distance * 0.18) % 1120 + 1120) % 1120 - 100;
+        ctx.fillRect(cloudX, 120 + (i % 2) * 34, 72, 10);
+      }
       ctx.fillStyle = '#2a1b13';
       for (const platform of runner.platforms) {
         ctx.fillRect(platform.x, platform.y, platform.w, platform.h);
@@ -813,7 +870,7 @@
       ctx.restore();
       ctx.fillStyle = 'rgba(255, 247, 224, 0.92)';
       ctx.font = '700 22px sans-serif';
-      ctx.fillText('← → 移動 / ↑ Space ジャンプ / Z 剣 / X 爆弾', 24, 36);
+      ctx.fillText('自動スクロール / ← → 位置調整 / ↑ Space ジャンプ / Z 剣 / X 爆弾', 24, 36);
       if (!runner.running) {
         ctx.fillStyle = 'rgba(20, 12, 6, 0.55)';
         ctx.fillRect(0, 0, 960, 540);
@@ -822,12 +879,13 @@
         ctx.textAlign = 'center';
         ctx.fillText(runner.life <= 0 ? 'ゲーム終了' : '武士道', 480, 250);
         ctx.font = '700 24px sans-serif';
-        ctx.fillText('剣と爆弾で敵を倒しながら進む', 480, 294);
+        ctx.fillText('流れる道を剣と爆弾で切り開く', 480, 294);
         ctx.textAlign = 'start';
       }
     }
 
     function startRunner() {
+      if (runner.running) return;
       if (runner.life <= 0) resetRunner();
       runner.running = true;
       runner.lastTime = performance.now();

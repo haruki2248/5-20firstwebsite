@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>小判ランナー | 2Dアクションゲーム</title>
+  <title>武士道 | 2Dアクションゲーム</title>
   <style>
     :root {
       --ink: #1a1410;
@@ -349,7 +349,7 @@
     <header class="site-header">
       <div class="brand">
         <span class="brand-mark" aria-hidden="true">日</span>
-        <span>小判ランナー</span>
+        <span>武士道</span>
       </div>
       <nav class="nav-links" aria-label="ページ内メニュー">
         <a href="#about">About</a>
@@ -359,7 +359,7 @@
 
     <section class="hero" aria-labelledby="page-title">
       <div>
-        <h1 id="page-title">小判を<br>集める</h1>
+        <h1 id="page-title">武士道</h1>
         <p class="lead">古風な世界を走り抜け、小判を集めながら障害物を避ける2次元アクションゲームです。</p>
         <div class="hero-actions">
           <a class="button primary" href="#action-game">ゲームを始める</a>
@@ -376,12 +376,12 @@
     <section id="action-game" class="action-game-section" aria-labelledby="action-game-title">
       <div class="action-game-header">
         <div>
-          <h2 id="action-game-title">小判ランナー</h2>
+          <h2 id="action-game-title">武士道</h2>
           <p>剣と爆弾を使い、敵をかわしながら小判を集める2次元アクションゲームです。</p>
         </div>
       </div>
       <div class="arcade-wrap">
-        <canvas id="runner-canvas" class="arcade-canvas" width="960" height="540" aria-label="小判ランナーゲーム画面"></canvas>
+        <canvas id="runner-canvas" class="arcade-canvas" width="960" height="540" aria-label="武士道ゲーム画面"></canvas>
         <div class="arcade-hud">
           <div class="game-stat"><span>得点</span><strong id="runner-score">0</strong></div>
           <div class="game-stat"><span>小判</span><strong id="runner-coins">0</strong></div>
@@ -820,7 +820,7 @@
         ctx.fillStyle = '#fff0bf';
         ctx.font = '900 44px sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText(runner.life <= 0 ? 'ゲーム終了' : '小判ランナー', 480, 250);
+        ctx.fillText(runner.life <= 0 ? 'ゲーム終了' : '武士道', 480, 250);
         ctx.font = '700 24px sans-serif';
         ctx.fillText('剣と爆弾で敵を倒しながら進む', 480, 294);
         ctx.textAlign = 'start';

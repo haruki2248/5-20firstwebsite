@@ -191,11 +191,8 @@
       color: var(--muted);
     }
 
-    .map-section {
-      display: grid;
-      grid-template-columns: minmax(280px, 0.76fr) minmax(320px, 1fr);
-      gap: 28px;
-      align-items: center;
+    .google-map-section {
+      margin-top: 28px;
       padding: 24px;
       border: 2px solid var(--ink);
       border-radius: 8px;
@@ -205,87 +202,26 @@
       box-shadow: var(--shadow);
     }
 
-    .map-copy {
-      display: grid;
+    .google-map-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
       gap: 18px;
-      align-self: stretch;
+      margin-bottom: 18px;
     }
 
-    .map-note {
+    .google-map-header p {
+      max-width: 34rem;
       color: var(--muted);
     }
 
-    .map-controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .map-stage {
-      display: grid;
-      place-items: center;
-      min-height: 520px;
-      border-radius: 8px;
-      background:
-        linear-gradient(90deg, rgba(205, 187, 152, 0.34) 1px, transparent 1px),
-        linear-gradient(180deg, rgba(205, 187, 152, 0.34) 1px, transparent 1px),
-        linear-gradient(135deg, rgba(20, 47, 63, 0.14), rgba(185, 140, 62, 0.1)),
-        #e8dcc1;
-      background-size: 28px 28px, 28px 28px, 100% 100%, 100% 100%;
-      border: 1px solid rgba(36, 29, 24, 0.28);
-      box-shadow: inset 0 0 0 1px rgba(255, 251, 239, 0.56);
-    }
-
-    .map-container {
-      max-width: 100%;
-      width: min(360px, 72vw);
-      filter: drop-shadow(0 18px 18px rgba(24, 32, 38, 0.14));
-    }
-
-    svg {
+    .google-map-frame {
       width: 100%;
-      height: auto;
-      cursor: pointer;
-    }
-
-    .satellite-photo {
-      pointer-events: none;
-    }
-
-    .region,
-    .prefecture {
-      fill: rgba(255, 255, 255, 0.02);
-      stroke: rgba(255, 255, 255, 0.82);
-      stroke-width: 2.4;
-      transition: fill 0.2s ease, transform 0.2s ease, filter 0.2s ease;
-      transform-box: fill-box;
-      transform-origin: center;
-    }
-
-    .region:hover,
-    .region:focus,
-    .prefecture:hover,
-    .prefecture:focus {
-      fill: rgba(242, 184, 75, 0.24);
-      stroke: #f2b84b;
-      filter: drop-shadow(0 0 7px rgba(242, 184, 75, 0.45));
-      transform: scale(1.025);
-      outline: none;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    .map-info {
-      margin-top: auto;
-      padding: 14px 16px;
-      background: rgba(249, 239, 225, 0.88);
-      border: 1px solid rgba(185, 140, 62, 0.48);
-      border-left: 6px solid var(--red);
+      height: min(68vh, 520px);
+      min-height: 360px;
+      border: 1px solid rgba(36, 29, 24, 0.28);
       border-radius: 8px;
-      font-weight: bold;
-      color: var(--blue-dark);
+      box-shadow: inset 0 0 0 1px rgba(255, 251, 239, 0.56);
     }
 
     @media (max-width: 860px) {
@@ -302,8 +238,7 @@
         gap: 12px;
       }
 
-      .hero,
-      .map-section {
+      .hero {
         grid-template-columns: 1fr;
       }
 
@@ -312,15 +247,15 @@
         min-height: auto;
       }
 
-      .map-stage {
-        min-height: 460px;
+      .google-map-header {
+        align-items: flex-start;
+        flex-direction: column;
       }
     }
 
     @media (max-width: 560px) {
       .site-header,
-      .hero-actions,
-      .map-controls {
+      .hero-actions {
         align-items: stretch;
         flex-direction: column;
       }
@@ -334,12 +269,12 @@
         width: 100%;
       }
 
-      .map-section {
+      .google-map-section {
         padding: 16px;
       }
 
-      .map-stage {
-        min-height: 400px;
+      .google-map-frame {
+        min-height: 320px;
       }
     }
   </style>
@@ -360,7 +295,7 @@
     <section class="hero" aria-labelledby="page-title">
       <div>
         <h1 id="page-title">日本を<br>見つける</h1>
-        <p class="lead">地域と都道府県を切り替えながら、日本の航空写真をクリックして地名を確認できるシンプルなWebサイトです。</p>
+        <p class="lead">Google Mapsで日本全体を表示し、拡大・縮小や移動をしながら各地を確認できるシンプルなWebサイトです。</p>
         <div class="hero-actions">
           <a class="button primary" href="#map">地図を見る</a>
           <a class="button" href="#about">サイトについて</a>
@@ -369,122 +304,26 @@
 
       <section id="about" class="profile" aria-labelledby="about-title">
         <h2 id="about-title">About</h2>
-        <p>GitHub Pagesで公開できる、HTMLだけの軽いページです。スマートフォンでも見やすいように余白・色・地図エリアを整えています。</p>
+        <p>GitHub Pagesで公開できる、HTMLだけの軽いページです。Google Mapsの埋め込み地図を中心に、スマートフォンでも見やすいように整えています。</p>
       </section>
     </section>
 
-    <section id="map" class="map-section" aria-labelledby="map-title">
-      <div class="map-copy">
+    <section id="map" class="google-map-section" aria-labelledby="google-map-title">
+      <div class="google-map-header">
         <div>
-          <h2 id="map-title">日本の航空写真</h2>
-          <p class="map-note">航空写真の上に地域表示と都道府県表示を重ね、エリアを選択できます。</p>
-        </div>
-        <div class="map-controls" aria-label="航空写真の表示切り替え">
-          <button id="toggle-map" type="button" aria-pressed="false">都道府県表示</button>
-        </div>
-        <div id="map-info" class="map-info">地域表示を重ねています。地名をクリックしてください。</div>
-      </div>
-
-      <div class="map-stage">
-        <div class="map-container" role="img" aria-label="日本の航空写真">
-          <svg id="region-map" class="map-svg" viewBox="0 0 300 760" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <defs>
-              <clipPath id="region-photo-clip">
-                <path d="M142 31 C162 15 200 18 216 43 C229 62 219 88 195 101 C171 114 132 103 119 77 C109 57 121 39 142 31 Z M218 84 C234 82 247 90 249 101 C236 105 223 100 218 84 Z" />
-                <path d="M160 124 C181 130 196 154 194 185 C191 215 205 245 191 270 C179 292 155 288 143 265 C132 244 137 216 127 193 C118 171 126 142 143 130 C148 126 153 124 160 124 Z" />
-                <path d="M139 267 C158 262 184 272 195 292 C205 311 199 334 180 346 C162 357 137 347 129 326 C121 306 126 276 139 267 Z" />
-                <path d="M89 277 C113 257 148 255 164 274 C178 292 169 318 183 338 C195 356 180 379 151 380 C127 380 111 363 91 357 C70 351 64 329 73 309 C77 297 82 286 89 277 Z" />
-                <path d="M78 365 C101 356 136 365 151 386 C165 405 153 429 128 438 C102 448 75 436 66 415 C58 395 62 372 78 365 Z" />
-                <path d="M39 421 C66 407 105 410 130 429 C149 443 143 465 116 476 C88 487 52 480 35 460 C23 446 25 429 39 421 Z" />
-                <path d="M121 489 C146 475 188 477 206 493 C220 506 211 528 185 536 C157 546 119 537 105 518 C96 506 105 497 121 489 Z" />
-                <path d="M55 529 C83 516 116 529 127 555 C139 582 119 604 124 629 C128 648 107 670 80 666 C56 662 48 636 56 615 C63 597 45 579 42 559 C40 546 44 535 55 529 Z" />
-                <path d="M146 690 C158 684 172 687 178 695 C167 702 152 701 146 690 Z M191 706 C204 703 217 708 221 717 C208 723 195 719 191 706 Z M114 674 C124 669 136 671 141 679 C130 685 119 683 114 674 Z" />
-              </clipPath>
-            </defs>
-            <image class="satellite-photo" href="https://upload.wikimedia.org/wikipedia/commons/5/50/Japan_satellite.jpg" x="-62" y="0" width="424" height="760" preserveAspectRatio="xMidYMid slice" clip-path="url(#region-photo-clip)" />
-            <path class="region" data-name="北海道" d="M142 31 C162 15 200 18 216 43 C229 62 219 88 195 101 C171 114 132 103 119 77 C109 57 121 39 142 31 Z M218 84 C234 82 247 90 249 101 C236 105 223 100 218 84 Z" tabindex="0" />
-            <path class="region" data-name="東北" d="M160 124 C181 130 196 154 194 185 C191 215 205 245 191 270 C179 292 155 288 143 265 C132 244 137 216 127 193 C118 171 126 142 143 130 C148 126 153 124 160 124 Z" tabindex="0" />
-            <path class="region" data-name="関東" d="M139 267 C158 262 184 272 195 292 C205 311 199 334 180 346 C162 357 137 347 129 326 C121 306 126 276 139 267 Z" tabindex="0" />
-            <path class="region" data-name="中部" d="M89 277 C113 257 148 255 164 274 C178 292 169 318 183 338 C195 356 180 379 151 380 C127 380 111 363 91 357 C70 351 64 329 73 309 C77 297 82 286 89 277 Z" tabindex="0" />
-            <path class="region" data-name="関西" d="M78 365 C101 356 136 365 151 386 C165 405 153 429 128 438 C102 448 75 436 66 415 C58 395 62 372 78 365 Z" tabindex="0" />
-            <path class="region" data-name="中国" d="M39 421 C66 407 105 410 130 429 C149 443 143 465 116 476 C88 487 52 480 35 460 C23 446 25 429 39 421 Z" tabindex="0" />
-            <path class="region" data-name="四国" d="M121 489 C146 475 188 477 206 493 C220 506 211 528 185 536 C157 546 119 537 105 518 C96 506 105 497 121 489 Z" tabindex="0" />
-            <path class="region" data-name="九州" d="M55 529 C83 516 116 529 127 555 C139 582 119 604 124 629 C128 648 107 670 80 666 C56 662 48 636 56 615 C63 597 45 579 42 559 C40 546 44 535 55 529 Z" tabindex="0" />
-            <path class="region" data-name="沖縄" d="M146 690 C158 684 172 687 178 695 C167 702 152 701 146 690 Z M191 706 C204 703 217 708 221 717 C208 723 195 719 191 706 Z M114 674 C124 669 136 671 141 679 C130 685 119 683 114 674 Z" tabindex="0" />
-          </svg>
-
-          <svg id="prefecture-map" class="map-svg hidden" viewBox="0 0 300 760" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <defs>
-              <clipPath id="prefecture-photo-clip">
-                <path d="M142 31 C162 15 200 18 216 43 C229 62 219 88 195 101 C171 114 132 103 119 77 C109 57 121 39 142 31 Z M218 84 C234 82 247 90 249 101 C236 105 223 100 218 84 Z" />
-                <path d="M160 124 C181 130 196 154 194 185 C191 215 205 245 191 270 C179 292 155 288 143 265 C132 244 137 216 127 193 C118 171 126 142 143 130 C148 126 153 124 160 124 Z" />
-                <path d="M139 267 C158 262 184 272 195 292 C205 311 199 334 180 346 C162 357 137 347 129 326 C121 306 126 276 139 267 Z" />
-                <path d="M89 277 C113 257 148 255 164 274 C178 292 169 318 183 338 C195 356 180 379 151 380 C127 380 111 363 91 357 C70 351 64 329 73 309 C77 297 82 286 89 277 Z" />
-                <path d="M78 365 C101 356 136 365 151 386 C165 405 153 429 128 438 C102 448 75 436 66 415 C58 395 62 372 78 365 Z" />
-                <path d="M39 421 C66 407 105 410 130 429 C149 443 143 465 116 476 C88 487 52 480 35 460 C23 446 25 429 39 421 Z" />
-                <path d="M121 489 C146 475 188 477 206 493 C220 506 211 528 185 536 C157 546 119 537 105 518 C96 506 105 497 121 489 Z" />
-                <path d="M55 529 C83 516 116 529 127 555 C139 582 119 604 124 629 C128 648 107 670 80 666 C56 662 48 636 56 615 C63 597 45 579 42 559 C40 546 44 535 55 529 Z" />
-                <path d="M146 690 C158 684 172 687 178 695 C167 702 152 701 146 690 Z M191 706 C204 703 217 708 221 717 C208 723 195 719 191 706 Z M114 674 C124 669 136 671 141 679 C130 685 119 683 114 674 Z" />
-              </clipPath>
-            </defs>
-            <image class="satellite-photo" href="https://upload.wikimedia.org/wikipedia/commons/5/50/Japan_satellite.jpg" x="-62" y="0" width="424" height="760" preserveAspectRatio="xMidYMid slice" clip-path="url(#prefecture-photo-clip)" />
-            <path class="prefecture" data-name="北海道" d="M142 31 C162 15 200 18 216 43 C229 62 219 88 195 101 C171 114 132 103 119 77 C109 57 121 39 142 31 Z M218 84 C234 82 247 90 249 101 C236 105 223 100 218 84 Z" tabindex="0" />
-            <path class="prefecture" data-name="青森" d="M145 124 C165 116 188 127 194 147 C184 161 162 165 142 156 C128 149 129 132 145 124 Z" tabindex="0" />
-            <path class="prefecture" data-name="宮城" d="M155 204 C176 204 193 221 194 241 C191 258 177 273 159 271 C143 262 139 236 145 219 C147 212 150 207 155 204 Z" tabindex="0" />
-            <path class="prefecture" data-name="東京" d="M151 322 C164 316 181 320 188 332 C181 344 163 350 148 343 C139 338 141 328 151 322 Z" tabindex="0" />
-            <path class="prefecture" data-name="愛知" d="M105 345 C127 337 154 343 166 360 C158 377 132 384 108 374 C94 366 93 352 105 345 Z" tabindex="0" />
-            <path class="prefecture" data-name="大阪" d="M84 390 C103 383 126 391 137 406 C131 421 108 431 88 423 C75 416 73 397 84 390 Z" tabindex="0" />
-            <path class="prefecture" data-name="広島" d="M49 425 C76 414 111 419 130 437 C118 453 82 463 53 454 C34 448 31 433 49 425 Z" tabindex="0" />
-            <path class="prefecture" data-name="香川" d="M151 487 C172 481 198 486 207 499 C197 512 169 517 148 507 C137 501 139 491 151 487 Z" tabindex="0" />
-            <path class="prefecture" data-name="福岡" d="M58 529 C82 518 112 527 123 548 C113 565 82 572 58 559 C44 550 45 536 58 529 Z" tabindex="0" />
-            <path class="prefecture" data-name="鹿児島" d="M74 611 C96 601 121 614 125 636 C119 655 96 670 76 662 C58 654 58 624 74 611 Z" tabindex="0" />
-            <path class="prefecture" data-name="沖縄" d="M146 690 C158 684 172 687 178 695 C167 702 152 701 146 690 Z M191 706 C204 703 217 708 221 717 C208 723 195 719 191 706 Z M114 674 C124 669 136 671 141 679 C130 685 119 683 114 674 Z" tabindex="0" />
-          </svg>
+          <h2 id="google-map-title">Google Map</h2>
+          <p>日本全体をGoogle Mapsで表示します。拡大・縮小や移動をしながら、現在の地図情報を確認できます。</p>
         </div>
       </div>
+      <iframe
+        class="google-map-frame"
+        title="Google Mapで見る日本"
+        src="https://www.google.com/maps?q=Japan&output=embed"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen>
+      </iframe>
     </section>
   </main>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const info = document.getElementById('map-info');
-      const toggleButton = document.getElementById('toggle-map');
-      const regionMap = document.getElementById('region-map');
-      const prefectureMap = document.getElementById('prefecture-map');
-      let currentLevel = 'region';
-
-      function setMapLevel(level) {
-        currentLevel = level;
-        const isRegion = level === 'region';
-        regionMap.classList.toggle('hidden', !isRegion);
-        prefectureMap.classList.toggle('hidden', isRegion);
-        toggleButton.textContent = isRegion ? '都道府県表示' : '地域表示';
-        toggleButton.setAttribute('aria-pressed', String(!isRegion));
-        info.textContent = (isRegion ? '地域表示' : '都道府県表示') + 'を重ねています。航空写真をクリックしてください。';
-      }
-
-      function addMapListeners(selector) {
-        const elements = document.querySelectorAll(selector);
-        elements.forEach(function (element) {
-          element.addEventListener('click', function () {
-            info.textContent = element.dataset.name + ' が選択されました。';
-          });
-          element.addEventListener('keydown', function (event) {
-            if (event.key === 'Enter' || event.key === ' ') {
-              event.preventDefault();
-              element.click();
-            }
-          });
-        });
-      }
-
-      toggleButton.addEventListener('click', function () {
-        setMapLevel(currentLevel === 'region' ? 'prefecture' : 'region');
-      });
-
-      addMapListeners('.region');
-      addMapListeners('.prefecture');
-    });
-  </script>
 </body>
 </html>

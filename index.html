@@ -28,16 +28,17 @@
       position: relative;
       margin: 0;
       min-height: 100vh;
-      font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", Arial, sans-serif;
+      font-family: "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Noto Serif JP", "Yu Gothic", serif;
       line-height: 1.6;
       color: var(--ink);
       background:
         radial-gradient(circle at 50% -10%, rgba(195, 154, 69, 0.34), transparent 34rem),
         radial-gradient(circle at 0 8%, rgba(123, 36, 31, 0.26), transparent 24rem),
         radial-gradient(circle at 100% 16%, rgba(15, 37, 48, 0.32), transparent 28rem),
+        linear-gradient(90deg, rgba(26, 20, 16, 0.5) 0 10px, transparent 10px calc(100% - 10px), rgba(26, 20, 16, 0.5) calc(100% - 10px)),
         repeating-linear-gradient(45deg, rgba(26, 20, 16, 0.08) 0 1px, transparent 1px 22px),
         repeating-linear-gradient(135deg, rgba(255, 247, 224, 0.13) 0 1px, transparent 1px 22px),
-        linear-gradient(180deg, #2a1b13 0, #8a6d3f 36%, #d8c49b 82%),
+        linear-gradient(180deg, #14100e 0, #542821 34%, #8a6d3f 66%, #d8c49b 100%),
         var(--paper);
     }
 
@@ -49,10 +50,11 @@
       background:
         linear-gradient(30deg, transparent 36%, rgba(195, 154, 69, 0.18) 37% 39%, transparent 40%),
         linear-gradient(150deg, transparent 36%, rgba(195, 154, 69, 0.14) 37% 39%, transparent 40%),
-        linear-gradient(90deg, rgba(26, 20, 16, 0.08) 1px, transparent 1px),
-        linear-gradient(180deg, rgba(26, 20, 16, 0.08) 1px, transparent 1px),
+        radial-gradient(circle at 72% 18%, rgba(255, 236, 178, 0.28) 0 4rem, transparent 4.2rem),
+        linear-gradient(90deg, rgba(26, 20, 16, 0.1) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(26, 20, 16, 0.1) 1px, transparent 1px),
         radial-gradient(ellipse at center, transparent 40%, rgba(18, 12, 8, 0.46) 100%);
-      background-size: 42px 72px, 42px 72px, 84px 84px, 84px 84px, 100% 100%;
+      background-size: 42px 72px, 42px 72px, 100% 100%, 84px 84px, 84px 84px, 100% 100%;
       opacity: 0.74;
       pointer-events: none;
     }
@@ -81,6 +83,7 @@
       color: #f4dfaa;
       letter-spacing: 0;
       text-shadow: 0 2px 12px rgba(20, 12, 6, 0.42);
+      font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
     }
 
     .brand-mark {
@@ -123,6 +126,7 @@
       line-height: 0.95;
       letter-spacing: 0;
       color: #fff0bf;
+      font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
       text-shadow:
         0 2px 0 rgba(26, 20, 16, 0.86),
         0 18px 32px rgba(20, 12, 6, 0.42);
@@ -463,6 +467,58 @@
       runnerAlly.textContent = runner.allyTime > 0 ? '同行' : 'なし';
     }
 
+    function drawSamurai(ctx, x, y, facing, colors, weapon) {
+      const direction = facing || 1;
+      ctx.save();
+      ctx.translate(x + 21, y);
+      ctx.scale(direction, 1);
+      ctx.fillStyle = colors.armor;
+      ctx.fillRect(-20, 26, 40, 28);
+      ctx.fillStyle = colors.trim;
+      ctx.fillRect(-23, 30, 46, 7);
+      ctx.fillRect(-18, 45, 36, 5);
+      ctx.fillStyle = '#f0d08b';
+      ctx.fillRect(-12, 8, 24, 18);
+      ctx.fillStyle = colors.helmet;
+      ctx.fillRect(-18, 0, 36, 10);
+      ctx.beginPath();
+      ctx.moveTo(-14, 0);
+      ctx.lineTo(0, -12);
+      ctx.lineTo(14, 0);
+      ctx.fill();
+      ctx.strokeStyle = colors.trim;
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(-23, 2);
+      ctx.lineTo(-38, -8);
+      ctx.moveTo(23, 2);
+      ctx.lineTo(38, -8);
+      ctx.stroke();
+      ctx.fillStyle = '#171312';
+      ctx.fillRect(-8, 16, 5, 4);
+      ctx.fillRect(4, 16, 5, 4);
+      ctx.fillStyle = colors.armor;
+      ctx.fillRect(-17, 54, 13, 12);
+      ctx.fillRect(4, 54, 13, 12);
+      if (weapon === 'bow') {
+        ctx.strokeStyle = '#e6d2a6';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.arc(25, 30, 23, -1.25, 1.25);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(25, 7);
+        ctx.lineTo(25, 53);
+        ctx.stroke();
+      } else {
+        ctx.fillStyle = '#f5e6b5';
+        ctx.fillRect(18, 28, 42, 6);
+        ctx.fillStyle = '#6f4e1c';
+        ctx.fillRect(10, 31, 16, 5);
+      }
+      ctx.restore();
+    }
+
     function rectsOverlap(a, b) {
       return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
     }
@@ -656,17 +712,34 @@
       const ctx = runnerCtx;
       ctx.clearRect(0, 0, runnerCanvas.width, runnerCanvas.height);
       const sky = ctx.createLinearGradient(0, 0, 0, 540);
-      sky.addColorStop(0, '#172230');
-      sky.addColorStop(0.62, '#66412b');
-      sky.addColorStop(1, '#c39a45');
+      sky.addColorStop(0, '#101826');
+      sky.addColorStop(0.48, '#48211d');
+      sky.addColorStop(1, '#b8863c');
       ctx.fillStyle = sky;
       ctx.fillRect(0, 0, 960, 540);
+      ctx.fillStyle = 'rgba(255, 232, 168, 0.9)';
+      ctx.beginPath();
+      ctx.arc(782, 86, 54, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = 'rgba(12, 16, 24, 0.7)';
+      ctx.beginPath();
+      ctx.moveTo(0, 315);
+      ctx.lineTo(130, 205);
+      ctx.lineTo(260, 316);
+      ctx.lineTo(405, 190);
+      ctx.lineTo(570, 318);
+      ctx.lineTo(760, 198);
+      ctx.lineTo(960, 324);
+      ctx.lineTo(960, 540);
+      ctx.lineTo(0, 540);
+      ctx.fill();
+      ctx.fillStyle = '#5e1a16';
+      ctx.fillRect(92, 250, 28, 206);
+      ctx.fillRect(190, 250, 28, 206);
+      ctx.fillRect(70, 222, 170, 30);
+      ctx.fillRect(92, 196, 126, 24);
       ctx.fillStyle = 'rgba(255, 240, 196, 0.12)';
-      for (let i = 0; i < 9; i += 1) {
-        ctx.beginPath();
-        ctx.arc(80 + i * 120, 74 + (i % 3) * 28, 38, 0, Math.PI * 2);
-        ctx.fill();
-      }
+      for (let i = 0; i < 7; i += 1) ctx.fillRect(40 + i * 150, 120 + (i % 2) * 34, 72, 10);
       ctx.fillStyle = '#2a1b13';
       for (const platform of runner.platforms) {
         ctx.fillRect(platform.x, platform.y, platform.w, platform.h);
@@ -710,36 +783,28 @@
         ctx.fillRect(arrow.vx > 0 ? arrow.x + arrow.w : arrow.x - 6, arrow.y - 3, 8, 12);
       }
       for (const enemy of runner.enemies) {
-        ctx.fillStyle = enemy.type === 'archer' ? '#305a6d' : '#8f241d';
-        ctx.fillRect(enemy.x, enemy.y, enemy.w, enemy.h);
-        ctx.fillStyle = '#f0d08b';
-        ctx.fillRect(enemy.x + 8, enemy.y + 6, 22, 10);
-        ctx.fillStyle = enemy.type === 'archer' ? '#1a1410' : '#e6d2a6';
-        if (enemy.type === 'archer') {
-          ctx.strokeStyle = '#e6d2a6';
-          ctx.lineWidth = 4;
-          ctx.beginPath();
-          ctx.arc(enemy.x + 18, enemy.y + 28, 18, -1.2, 1.2);
-          ctx.stroke();
-        } else {
-          ctx.fillRect(enemy.x - 18, enemy.y + 22, 42, 6);
-        }
+        const facing = enemy.type === 'archer' ? (runner.player.x < enemy.x ? -1 : 1) : (enemy.vx < 0 ? -1 : 1);
+        drawSamurai(ctx, enemy.x, enemy.y - 12, facing, {
+          armor: enemy.type === 'archer' ? '#26485b' : '#84241f',
+          helmet: '#171312',
+          trim: enemy.type === 'archer' ? '#c39a45' : '#f0d08b'
+        }, enemy.type === 'archer' ? 'bow' : 'sword');
       }
       if (runner.allyTime > 0) {
-        ctx.fillStyle = '#2f6b3f';
-        ctx.fillRect(runner.player.x - 52, runner.player.y + 12, 34, 42);
-        ctx.fillStyle = '#f0d08b';
-        ctx.fillRect(runner.player.x - 45, runner.player.y + 18, 20, 10);
+        drawSamurai(ctx, runner.player.x - 58, runner.player.y, 1, {
+          armor: '#2f6b3f',
+          helmet: '#171312',
+          trim: '#d4b35d'
+        }, 'sword');
       }
       const p = runner.player;
       ctx.save();
       ctx.globalAlpha = p.invincible > 0 && Math.floor(p.invincible * 12) % 2 === 0 ? 0.45 : 1;
-      ctx.fillStyle = '#f0d08b';
-      ctx.fillRect(p.x + 8, p.y + 4, 26, 22);
-      ctx.fillStyle = '#243244';
-      ctx.fillRect(p.x, p.y + 24, p.w, 30);
-      ctx.fillStyle = '#9b332c';
-      ctx.fillRect(p.x - 8, p.y + 20, 58, 8);
+      drawSamurai(ctx, p.x, p.y, p.facing, {
+        armor: '#243244',
+        helmet: '#171312',
+        trim: '#9b332c'
+      }, 'sword');
       if (p.attack > 0) {
         ctx.fillStyle = '#f5e6b5';
         const sx = p.facing > 0 ? p.x + p.w : p.x - 44;

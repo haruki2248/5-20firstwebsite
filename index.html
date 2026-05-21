@@ -3,53 +3,214 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>日本全土</title>
+  <title>日本全土 | インタラクティブ地図</title>
   <style>
+    :root {
+      --ink: #182026;
+      --muted: #65717c;
+      --paper: #fffdf7;
+      --surface: #ffffff;
+      --line: #d8ddd7;
+      --blue: #1d5f8f;
+      --blue-dark: #123f63;
+      --red: #b7352d;
+      --green: #7fb069;
+      --green-dark: #3f7444;
+      --shadow: 0 18px 44px rgba(24, 32, 38, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", Arial, sans-serif;
       line-height: 1.6;
-      color: #222;
-      background: #f7f7f7;
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, rgba(29, 95, 143, 0.08), rgba(255, 253, 247, 0) 360px),
+        var(--paper);
     }
 
     main {
-      max-width: 720px;
+      max-width: 1120px;
       margin: 0 auto;
-      padding: 64px 24px;
+      padding: 40px 24px 56px;
+    }
+
+    .site-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 16px 0 40px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border: 2px solid var(--ink);
+      border-radius: 8px;
+      background: var(--green);
+      color: #ffffff;
+      box-shadow: 4px 4px 0 var(--ink);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      font-size: 0.94rem;
+    }
+
+    .nav-links a {
+      color: var(--blue-dark);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 0.88fr) minmax(360px, 1.12fr);
+      gap: 40px;
+      align-items: center;
+      min-height: calc(100vh - 220px);
+      padding-bottom: 36px;
     }
 
     h1 {
-      margin-bottom: 16px;
-      font-size: 2.5rem;
+      margin: 0 0 18px;
+      font-size: clamp(2.8rem, 8vw, 6.4rem);
+      line-height: 0.95;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.35rem, 2vw, 1.8rem);
+      line-height: 1.25;
     }
 
     p {
+      margin: 0;
       font-size: 1.1rem;
     }
 
-    .profile,
-    .map-section {
-      margin-top: 32px;
-      padding: 24px;
-      background: #fff;
-      border: 1px solid #ddd;
+    .lead {
+      max-width: 36rem;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.8vw, 1.22rem);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .button,
+    button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border: 2px solid var(--ink);
       border-radius: 8px;
+      background: var(--surface);
+      color: var(--ink);
+      box-shadow: 4px 4px 0 var(--ink);
+      font: inherit;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    .button.primary,
+    button[aria-pressed="true"] {
+      background: var(--red);
+      color: #ffffff;
+    }
+
+    .button:hover,
+    button:hover,
+    .button:focus-visible,
+    button:focus-visible {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0 var(--ink);
+      outline: none;
+    }
+
+    .profile {
+      display: grid;
+      gap: 10px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    .profile p {
+      color: var(--muted);
     }
 
     .map-section {
-      text-align: center;
+      display: grid;
+      grid-template-columns: minmax(280px, 0.76fr) minmax(320px, 1fr);
+      gap: 28px;
+      align-items: center;
+      padding: 24px;
+      border: 2px solid var(--ink);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .map-copy {
+      display: grid;
+      gap: 18px;
+      align-self: stretch;
     }
 
     .map-note {
-      margin-bottom: 16px;
-      color: #555;
+      color: var(--muted);
+    }
+
+    .map-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .map-stage {
+      display: grid;
+      place-items: center;
+      min-height: 520px;
+      border-radius: 8px;
+      background:
+        linear-gradient(90deg, rgba(216, 221, 215, 0.55) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(216, 221, 215, 0.55) 1px, transparent 1px),
+        #f4f7f1;
+      background-size: 28px 28px;
+      border: 1px solid var(--line);
     }
 
     .map-container {
-      display: inline-block;
       max-width: 100%;
-      width: 360px;
+      width: min(360px, 72vw);
+      filter: drop-shadow(0 18px 18px rgba(24, 32, 38, 0.14));
     }
 
     svg {
@@ -60,18 +221,22 @@
 
     .region,
     .prefecture {
-      fill: #a4d4ff;
-      stroke: #2b6cb0;
+      fill: var(--green);
+      stroke: var(--blue-dark);
       stroke-width: 2;
-      transition: fill 0.2s ease, transform 0.2s ease;
+      transition: fill 0.2s ease, transform 0.2s ease, filter 0.2s ease;
+      transform-box: fill-box;
+      transform-origin: center;
     }
 
     .region:hover,
     .region:focus,
     .prefecture:hover,
     .prefecture:focus {
-      fill: #70b7ff;
-      transform: scale(1.02);
+      fill: #f2b84b;
+      filter: brightness(1.02);
+      transform: scale(1.025);
+      outline: none;
     }
 
     .hidden {
@@ -79,60 +244,142 @@
     }
 
     .map-info {
-      margin-top: 18px;
-      padding: 12px 16px;
-      background: #eef6ff;
-      border: 1px solid #b3d7ff;
-      border-radius: 6px;
+      margin-top: auto;
+      padding: 14px 16px;
+      background: #f7efe0;
+      border: 1px solid #e3c98f;
+      border-left: 6px solid var(--red);
+      border-radius: 8px;
       font-weight: bold;
-      color: #1a5a9b;
+      color: var(--blue-dark);
+    }
+
+    @media (max-width: 860px) {
+      main {
+        padding: 28px 16px 40px;
+      }
+
+      .site-header {
+        align-items: flex-start;
+        padding-bottom: 28px;
+      }
+
+      .nav-links {
+        gap: 12px;
+      }
+
+      .hero,
+      .map-section {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        gap: 24px;
+        min-height: auto;
+      }
+
+      .map-stage {
+        min-height: 460px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .site-header,
+      .hero-actions,
+      .map-controls {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+      }
+
+      .button,
+      button {
+        width: 100%;
+      }
+
+      .map-section {
+        padding: 16px;
+      }
+
+      .map-stage {
+        min-height: 400px;
+      }
     }
   </style>
 </head>
 <body>
   <main>
-    <h1>こんにちは</h1>
-    <p>ここは私のWebサイトです。</p>
+    <header class="site-header">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">日</span>
+        <span>日本全土</span>
+      </div>
+      <nav class="nav-links" aria-label="ページ内メニュー">
+        <a href="#about">About</a>
+        <a href="#map">Map</a>
+      </nav>
+    </header>
 
-    <section class="profile">
-      <h2>About</h2>
-      <p>このページはGitHub Pagesで公開するためのシンプルなHTMLです。</p>
+    <section class="hero" aria-labelledby="page-title">
+      <div>
+        <h1 id="page-title">日本を<br>見つける</h1>
+        <p class="lead">地域と都道府県を切り替えながら、日本地図をクリックして地名を確認できるシンプルなWebサイトです。</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#map">地図を見る</a>
+          <a class="button" href="#about">サイトについて</a>
+        </div>
+      </div>
+
+      <section id="about" class="profile" aria-labelledby="about-title">
+        <h2 id="about-title">About</h2>
+        <p>GitHub Pagesで公開できる、HTMLだけの軽いページです。スマートフォンでも見やすいように余白・色・地図エリアを整えています。</p>
+      </section>
     </section>
 
-    <section class="map-section">
-      <h2>日本地図</h2>
-      <p class="map-note">地図の切り替えボタンで「地域マップ」と「都道府県マップ」を切り替えられます。</p>
-      <div class="map-controls">
-        <button id="toggle-map" type="button">都道府県マップに切り替える</button>
+    <section id="map" class="map-section" aria-labelledby="map-title">
+      <div class="map-copy">
+        <div>
+          <h2 id="map-title">日本地図</h2>
+          <p class="map-note">地域マップと都道府県マップを切り替えて、地図上のエリアを選択できます。</p>
+        </div>
+        <div class="map-controls" aria-label="地図の表示切り替え">
+          <button id="toggle-map" type="button" aria-pressed="false">都道府県マップ</button>
+        </div>
+        <div id="map-info" class="map-info">地域マップを表示しています。地名をクリックしてください。</div>
       </div>
-      <div class="map-container" role="img" aria-label="日本地図">
-        <svg id="region-map" class="map-svg" viewBox="0 0 300 760" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path class="region" data-name="北海道" d="M150 25 C175 20 205 35 195 55 C190 70 175 85 150 80 C130 70 125 45 150 25 Z" tabindex="0" />
-          <path class="region" data-name="東北" d="M135 110 C165 105 190 125 190 150 C185 165 170 180 150 175 C135 165 130 140 135 110 Z" tabindex="0" />
-          <path class="region" data-name="関東" d="M150 215 C175 210 195 235 190 255 C185 270 170 280 150 270 C140 255 140 225 150 215 Z" tabindex="0" />
-          <path class="region" data-name="中部" d="M110 290 C145 285 175 310 170 340 C165 360 145 370 120 355 C110 335 110 305 110 290 Z" tabindex="0" />
-          <path class="region" data-name="関西" d="M90 385 C120 380 150 405 145 430 C140 450 120 455 100 440 C90 420 90 395 90 385 Z" tabindex="0" />
-          <path class="region" data-name="中国" d="M65 475 C95 470 125 492 130 515 C130 535 110 545 85 530 C70 515 65 485 65 475 Z" tabindex="0" />
-          <path class="region" data-name="四国" d="M175 505 C195 500 220 520 215 545 C205 555 185 560 170 545 C165 525 165 510 175 505 Z" tabindex="0" />
-          <path class="region" data-name="九州" d="M70 585 C105 585 130 615 125 640 C120 655 100 660 80 650 C70 630 70 605 70 585 Z" tabindex="0" />
-          <path class="region" data-name="沖縄" d="M165 695 C185 695 205 705 205 715 C190 720 170 720 165 715 C160 710 160 695 165 695 Z" tabindex="0" />
-        </svg>
 
-        <svg id="prefecture-map" class="map-svg hidden" viewBox="0 0 300 760" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path class="prefecture" data-name="北海道" d="M150 25 C175 20 205 35 195 55 C190 70 175 85 150 80 C130 70 125 45 150 25 Z" tabindex="0" />
-          <path class="prefecture" data-name="青森" d="M140 110 C160 103 180 115 180 132 C175 145 160 155 145 150 C135 140 132 118 140 110 Z" tabindex="0" />
-          <path class="prefecture" data-name="宮城" d="M145 138 C165 135 182 155 180 170 C175 185 160 193 145 185 C138 168 140 145 145 138 Z" tabindex="0" />
-          <path class="prefecture" data-name="東京" d="M155 220 C175 215 190 235 187 250 C180 265 165 275 150 265 C145 250 150 228 155 220 Z" tabindex="0" />
-          <path class="prefecture" data-name="愛知" d="M125 310 C150 305 170 325 167 345 C160 360 145 368 130 355 C125 340 122 320 125 310 Z" tabindex="0" />
-          <path class="prefecture" data-name="大阪" d="M100 390 C128 388 145 410 140 428 C132 444 118 448 102 435 C95 420 94 398 100 390 Z" tabindex="0" />
-          <path class="prefecture" data-name="広島" d="M80 475 C108 472 125 492 122 510 C118 525 102 532 85 517 C78 500 78 482 80 475 Z" tabindex="0" />
-          <path class="prefecture" data-name="香川" d="M205 505 C220 505 235 520 230 532 C225 542 215 548 205 540 C200 530 200 512 205 505 Z" tabindex="0" />
-          <path class="prefecture" data-name="福岡" d="M75 585 C102 585 125 610 120 630 C115 645 100 650 85 635 C78 620 76 602 75 585 Z" tabindex="0" />
-          <path class="prefecture" data-name="鹿児島" d="M78 658 C100 657 118 675 115 688 C110 698 95 703 80 690 C75 678 77 663 78 658 Z" tabindex="0" />
-          <path class="prefecture" data-name="沖縄" d="M165 695 C185 695 205 705 205 715 C190 720 170 720 165 715 C160 710 160 695 165 695 Z" tabindex="0" />
-        </svg>
+      <div class="map-stage">
+        <div class="map-container" role="img" aria-label="日本地図">
+          <svg id="region-map" class="map-svg" viewBox="0 0 300 760" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path class="region" data-name="北海道" d="M150 25 C175 20 205 35 195 55 C190 70 175 85 150 80 C130 70 125 45 150 25 Z" tabindex="0" />
+            <path class="region" data-name="東北" d="M135 110 C165 105 190 125 190 150 C185 165 170 180 150 175 C135 165 130 140 135 110 Z" tabindex="0" />
+            <path class="region" data-name="関東" d="M150 215 C175 210 195 235 190 255 C185 270 170 280 150 270 C140 255 140 225 150 215 Z" tabindex="0" />
+            <path class="region" data-name="中部" d="M110 290 C145 285 175 310 170 340 C165 360 145 370 120 355 C110 335 110 305 110 290 Z" tabindex="0" />
+            <path class="region" data-name="関西" d="M90 385 C120 380 150 405 145 430 C140 450 120 455 100 440 C90 420 90 395 90 385 Z" tabindex="0" />
+            <path class="region" data-name="中国" d="M65 475 C95 470 125 492 130 515 C130 535 110 545 85 530 C70 515 65 485 65 475 Z" tabindex="0" />
+            <path class="region" data-name="四国" d="M175 505 C195 500 220 520 215 545 C205 555 185 560 170 545 C165 525 165 510 175 505 Z" tabindex="0" />
+            <path class="region" data-name="九州" d="M70 585 C105 585 130 615 125 640 C120 655 100 660 80 650 C70 630 70 605 70 585 Z" tabindex="0" />
+            <path class="region" data-name="沖縄" d="M165 695 C185 695 205 705 205 715 C190 720 170 720 165 715 C160 710 160 695 165 695 Z" tabindex="0" />
+          </svg>
+
+          <svg id="prefecture-map" class="map-svg hidden" viewBox="0 0 300 760" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path class="prefecture" data-name="北海道" d="M150 25 C175 20 205 35 195 55 C190 70 175 85 150 80 C130 70 125 45 150 25 Z" tabindex="0" />
+            <path class="prefecture" data-name="青森" d="M140 110 C160 103 180 115 180 132 C175 145 160 155 145 150 C135 140 132 118 140 110 Z" tabindex="0" />
+            <path class="prefecture" data-name="宮城" d="M145 138 C165 135 182 155 180 170 C175 185 160 193 145 185 C138 168 140 145 145 138 Z" tabindex="0" />
+            <path class="prefecture" data-name="東京" d="M155 220 C175 215 190 235 187 250 C180 265 165 275 150 265 C145 250 150 228 155 220 Z" tabindex="0" />
+            <path class="prefecture" data-name="愛知" d="M125 310 C150 305 170 325 167 345 C160 360 145 368 130 355 C125 340 122 320 125 310 Z" tabindex="0" />
+            <path class="prefecture" data-name="大阪" d="M100 390 C128 388 145 410 140 428 C132 444 118 448 102 435 C95 420 94 398 100 390 Z" tabindex="0" />
+            <path class="prefecture" data-name="広島" d="M80 475 C108 472 125 492 122 510 C118 525 102 532 85 517 C78 500 78 482 80 475 Z" tabindex="0" />
+            <path class="prefecture" data-name="香川" d="M205 505 C220 505 235 520 230 532 C225 542 215 548 205 540 C200 530 200 512 205 505 Z" tabindex="0" />
+            <path class="prefecture" data-name="福岡" d="M75 585 C102 585 125 610 120 630 C115 645 100 650 85 635 C78 620 76 602 75 585 Z" tabindex="0" />
+            <path class="prefecture" data-name="鹿児島" d="M78 658 C100 657 118 675 115 688 C110 698 95 703 80 690 C75 678 77 663 78 658 Z" tabindex="0" />
+            <path class="prefecture" data-name="沖縄" d="M165 695 C185 695 205 705 205 715 C190 720 170 720 165 715 C160 710 160 695 165 695 Z" tabindex="0" />
+          </svg>
+        </div>
       </div>
-      <div id="map-info" class="map-info">地名をクリックしてください。</div>
     </section>
   </main>
 
@@ -149,7 +396,8 @@
         const isRegion = level === 'region';
         regionMap.classList.toggle('hidden', !isRegion);
         prefectureMap.classList.toggle('hidden', isRegion);
-        toggleButton.textContent = isRegion ? '都道府県マップに切り替える' : '地域マップに戻す';
+        toggleButton.textContent = isRegion ? '都道府県マップ' : '地域マップ';
+        toggleButton.setAttribute('aria-pressed', String(!isRegion));
         info.textContent = (isRegion ? '地域マップ' : '都道府県マップ') + 'を表示しています。地図をクリックしてください。';
       }
 
